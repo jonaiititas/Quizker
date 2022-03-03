@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Category(models.Model):
-        Title = models.Charfield(max_length=128, unique=True)
+        Title = models.CharField(max_length=128, unique=True)
         Description = models.Charfield(max_length=256)
         
 class Quiz(models.Model):
