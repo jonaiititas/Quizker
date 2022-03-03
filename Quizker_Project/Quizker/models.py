@@ -4,18 +4,19 @@ from django.db import models
 # Create your models here.
 class Category(models.Model):
         Title = models.CharField(max_length=128, unique=True)
-        Description = models.Charfield(max_length=256)
+        Description = models.CharField(max_length=256)
         
 class Quiz(models.Model):
         Title = models.CharField(max_length = 128,unique=True)
-        #Creator = models.ForeignKey(User, on_delete_cascade=True)
-        Category = models.ForeignKey(Category, on_delete_cascade=True)
-        Date = models.Date()
+        #Creator = models.ForeignKey(User, on_delete=models.CASCADE)
+        Category = models.ForeignKey(Category, on_delete=models.CASCADE)
+        Date = models.DateField()
         Description = models.CharField(max_length=256)
 class Question(models.Model):
-        ID = models.IntegerField()
-        Quiz = models.ForeignKey(Quiz, on_delete_cascade=True)
-        Image = models.Image()
+        models.CharField(max_length =128)
+        QuestionID = models.IntegerField()
+        Quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+        Image = models.ImageField()
         Text = models.CharField(max_length=256)
 class TrueOrFalse(Question):
         Answer = models.BooleanField()
@@ -27,10 +28,10 @@ class OpenEnded(Question):
               return Answer == attempt
 class MultipleChoice(Question):
        def correctAnswer(self,choice):
-              return choice.correct
+              return choice.Correct
 class choice(models.Model):
-        ID = models.IntegerField()
-        Question = models.ForeignKey(MultipleChoice,on_delete_cascade=True)
+        ChoiceID = models.IntegerField()
+        Question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
         Text = models.CharField(max_length=128)
         Correct = models.BooleanField(default=False)
        
