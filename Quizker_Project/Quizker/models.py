@@ -13,8 +13,7 @@ class Quiz(models.Model):
         Date = models.DateField()
         Description = models.CharField(max_length=256)
 class Question(models.Model):
-        models.CharField(max_length =128)
-        QuestionID = models.IntegerField()
+        QuestionID = models.IntegerField(unique=True)
         Quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
         Image = models.ImageField()
         Text = models.CharField(max_length=256)
@@ -30,7 +29,7 @@ class MultipleChoice(Question):
        def correctAnswer(self,choice):
               return choice.Correct
 class choice(models.Model):
-        ChoiceID = models.IntegerField()
+        ChoiceID = models.IntegerField(unique=True)
         Question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
         Text = models.CharField(max_length=128)
         Correct = models.BooleanField(default=False)
