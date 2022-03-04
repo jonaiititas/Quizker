@@ -26,7 +26,7 @@ class Question(models.Model):
         Image = models.ImageField(blank=True)
         Text = models.CharField(max_length=256)
         def __str__(self):
-             return self.Quiz.Title + str(self.QuestionID)
+             return self.Quiz.Title + " "+str(self.QuestionID)
 class TrueOrFalse(Question):
         Answer = models.BooleanField()
         def correctAnswer(self,attempt):
@@ -51,5 +51,5 @@ class choice(models.Model):
         Text = models.CharField(max_length=128)
         Correct = models.BooleanField(default=False)
         def __str__(self):
-            return ChoiceID
+            return self.Question.Quiz.Title + " "+str(self.Question.QuestionID) + " Choice " +str(self.ChoiceID)
 
