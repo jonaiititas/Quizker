@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from Quizker import views
+from django.urls import include 
 
 urlpatterns = [
+    path('',views.Home,name="Home"),
+    path('Quizker/',include('Quizker.urls')),
     path('admin/', admin.site.urls),
 ]

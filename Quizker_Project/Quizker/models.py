@@ -24,7 +24,9 @@ class Question(models.Model):
         QuestionID = models.IntegerField(unique=True)
         Quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
         Image = models.ImageField(blank=True)
-        Text = models.CharField(max_length=256)
+        max_length_text =256
+        Text = models.CharField(max_length=max_length_text)
+        QID = 0
         def __str__(self):
              return self.Quiz.Title + " "+str(self.QuestionID)
 class TrueOrFalse(Question):
@@ -50,6 +52,7 @@ class choice(models.Model):
         Question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
         Text = models.CharField(max_length=128)
         Correct = models.BooleanField(default=False)
+        CIQ=0
         def __str__(self):
             return self.Question.Quiz.Title + " "+str(self.Question.QuestionID) + " Choice " +str(self.ChoiceID)
 
