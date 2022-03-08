@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Create a Quiz</title>
+<title>Question Type</title>
 <body>
 <h2>Create a Quiz</h2>
 		<div>
-		   <form id="QuizForm" method="post" action="{% url 'Quizker:CreateQuiz' %}">
+		   <form id="QuestionTypeForm" method="post" action="{% url 'Quizker:QuestionType' Quiz.slug%}">
+		   
 		   {% csrf_token %}
 		   {% for hidden in form.hidden_fields %}
 		       {{ hidden }}
