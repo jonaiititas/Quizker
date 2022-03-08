@@ -1,62 +1,65 @@
 from django.db import models
-
+from django.template.defaultfilters import slugify 
 
 # Create your models here.
 class Category(models.Model):
-        Title = models.CharField(max_length=128, unique=True)
-        Description = models.CharField(max_length=256)
+        id = models.AutoField(primary_key=True)
+        title = models.CharField(max_length=128, unique=True)
+        description = models.CharField(max_length=256)
         def __str__(self):
-             return self.Title 
+             return self.title 
         class Meta:
             verbose_name_plural = "Categories"
-
 class Quiz(models.Model):
-        Title = models.CharField(max_length = 128,unique=True)
+        id = models.AutoField(primary_key=True)
+        title = models.CharField(max_length = 128,unique=True)
         #Creator = models.ForeignKey(User, on_delete=models.CASCADE)
-        Category = models.ForeignKey(Category, on_delete=models.CASCADE)
-        Date = models.DateField()
-        Description = models.CharField(max_length=256)
+        category = models.ForeignKey(Category, on_delete=models.CASCADE)
+        date = models.DateField()
+        description = models.CharField(max_length=256)
+        slug = models.SlugField(unique=True)
+        def save(self, *args, **kwargs):
+            self.slug = slugify(self.title)
+            super(Quiz,self).save(*args, **kwargs)
         def __str__(self):
-             return self.Title
+             return self.title
         class Meta:
             verbose_name_plural = "Quizzes"
-
 class Question(models.Model):
-        QuestionID = models.IntegerField(unique=True)
-        Quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-        Image = models.ImageField(blank=True)
+        id = models.AutoField(primary_key=True)
+        quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+        image = models.ImageField(blank=True)
         max_length_text =256
         Text = models.CharField(max_length=max_length_text)
-        QID = 0
         def __str__(self):
              return self.Quiz.Title + " "+str(self.QuestionID)
 
 class TrueOrFalse(Question):
-        Answer = models.BooleanField()
+        answer = models.BooleanField()
         def correctAnswer(self,attempt):
-               return Answer==attempt
+               return answer==attempt
         class Meta:
             verbose_name_plural = "True or False Questions"
 
 class OpenEnded(Question):
-        Answer = models.CharField(max_length=128)
+        answer = models.CharField(max_length=128)
         def correctAnswer(self,attempt):
-              return Answer == attempt
+              return answer == attempt
         class Meta:
             verbose_name_plural = "Open ended Questions"
 
 class MultipleChoice(Question):
        def correctAnswer(self,choice):
-              return choice.Correct
+              return choice.correct
        class Meta:
             verbose_name_plural = "Multiple Choice Questions"
   
 class Choice(models.Model):
-        ChoiceID = models.IntegerField(unique=True)
-        Question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
-        Text = models.CharField(max_length=128)
-        Correct = models.BooleanField(default=False)
-        CIQ=0
+
+        id = models.AutoField(primary_key=True)
+        question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
+        text = models.CharField(max_length=128)
+        correct = models.BooleanField(default=False)
         def __str__(self):
-            return self.Question.Quiz.Title + " "+str(self.Question.QuestionID) + " Choice " +str(self.ChoiceID)
+            return str(self.choiceID)
 
