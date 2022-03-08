@@ -21,5 +21,6 @@ from django.urls import include
 urlpatterns = [
     path('',views.Home,name="Home"),
     path('Quizker/',include('Quizker.urls')),
+    path('accounts/', include('registration.backends.simple.urls')),
     path('admin/', admin.site.urls),
 ]
