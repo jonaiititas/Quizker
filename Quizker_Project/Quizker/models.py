@@ -32,7 +32,7 @@ class Question(models.Model):
         max_length_text =256
         Text = models.CharField(max_length=max_length_text)
         def __str__(self):
-             return self.Quiz.Title + " "+str(self.QuestionID)
+             return self.quiz.title + " "+str(self.id)
 
 class TrueOrFalse(Question):
         answer = models.BooleanField()
@@ -61,5 +61,5 @@ class Choice(models.Model):
         text = models.CharField(max_length=128)
         correct = models.BooleanField(default=False)
         def __str__(self):
-            return str(self.choiceID)
+            return str(self.id)
 
