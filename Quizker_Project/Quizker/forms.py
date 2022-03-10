@@ -1,5 +1,5 @@
 from django import forms
-from Quizker.models import Category,Quiz,TrueOrFalse,OpenEnded,MultipleChoice,Choice,Question
+from Quizker.models import Category,Quiz,TrueOrFalse,OpenEnded,MultipleChoice,Choice,Question,QuestionType
 import datetime
 from django.template.defaultfilters import slugify
 
@@ -15,36 +15,39 @@ class QuizForm(forms.ModelForm):
           fields=('title','category','description',)
           
 class QuestionForm(forms.ModelForm):
-     ID = forms.IntegerField(widget=forms.HiddenInput(),initial=0)
-     Text = forms.CharField(max_length=256,help_text="Question text")
-     class Meta:
-         model = Question 
-         exclude= ('Quiz',)
-         
-class TrueOrFalseForm(QuestionForm):
-     Answer = forms.BooleanField(help_text="True or False?")
+     text = forms.CharField(max_length=256,help_text="Question text")
+     image = forms.ImageField(required=False)
      class Meta:
          model = TrueOrFalse
-         exclude= ('Quiz',)
+         fields=("text","image",)
+         
+class TrueOrFalseForm(QuestionForm):
+     answer = forms.BooleanField(help_text="True or False?")
+     class Meta:
+         model = TrueOrFalse
+         fields=("text","image","answer",)
 class OpenEndedForm(QuestionForm):
-     Answer = forms.CharField(max_length=128,help_text="What is the answer?")
+     answer = forms.CharField(max_length=128,help_text="What is the answer?")
      class Meta:
          model = OpenEnded
-         exclude= ('Quiz',)
+         fields=("text","image","answer",)
 class MultipleChoiceForm(QuestionForm):
      class Meta:
          model = MultipleChoice
-         exclude= ('Quiz',)
+         fields=("text","image",)
 class ChoiceForm(forms.ModelForm):
-     ChoiceID = forms.IntegerField(initial=0)
-     Text = forms.CharField(max_length=128,help_text="Choice Text")
-     Correct = forms.BooleanField(initial=False)
+     text = forms.CharField(max_length=128,help_text="Choice Text")
+     correct = forms.BooleanField(initial=False)
      class Meta:
          model = Choice
-         exclude = ('Question',)
+         fields = ('text','correct',)
+
 class QuestionTypeForm(forms.ModelForm):
-     Category = forms.CharField(help_text="What type of question?",widget=forms.Select(choices=['True or False','Open Ended','Multiple Choice']))
-     
+     QType = forms.ChoiceField(help_text="What type of question?",choices =(('1',"Open Ended"),('2',"True or False"),('3',"Multiple Choice")))
+     class Meta:
+          model = QuestionType
+          fields= ('QType',)
+          
 
 
 
