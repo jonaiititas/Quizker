@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<title>Question Type</title>
+<body>
+<h2>Create a Quiz</h2>
+		<div>
+		   {% if Question %}
+		     <p>{{ Question.text }}</p>
+			   
+
+            {% if OpenEnded %}
+			
+              <form method="POST" action="{% url 'Quizker:ParticapteQuiz' Quiz.slug QuestionNumber %}">
+               {% csrf_token %}
+               <input type="text" name="answer">
+
+               <button type="submit">Submit Answer</button>
+              </form>
+			{% elif TrueOrFalse %}
+			  <form method="POST" action="{% url 'Quizker:ParticapteQuiz' Quiz.slug QuestionNumber %}">
+			  {% csrf_token %}
+               <input type="checkbox" name="answer">
+
+               <button type="submit">Submit Answer</button>
+			  
+            {% endif %}			  
+           {% endif %}		   
+	    </div>
+</body>
+		
+		
+</html>
