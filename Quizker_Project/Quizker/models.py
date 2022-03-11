@@ -28,9 +28,8 @@ class Quiz(models.Model):
 class Question(models.Model):
         id = models.AutoField(primary_key=True)
         quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-        image = models.ImageField(blank=True)
-        max_length_text =256
-        text = models.CharField(max_length=max_length_text)
+        image = models.ImageField(upload_to='Question_Images',blank=True)
+        text = models.CharField(max_length=256)
         def __str__(self):
              return self.quiz.title + " "+str(self.id)
 

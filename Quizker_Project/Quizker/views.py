@@ -107,9 +107,20 @@ def CreateQuiz(request):
         
      return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
 def ParticipateQuiz(request, quiz_title_slug, question_number=0):
-    QList = list(Question.objects.filter(quiz=Quiz.objects.get(slug=quiz_title_slug)))
-    print(QList[0].Text)
-    return render(request,'Quizker/ParticipateQuiz.html',context={'Question':QList[question_number]})
+    q = Quiz.objects.get(slug=quiz_title_slug)
+    QList = list(Question.objects.filter(quiz=q))
+    context_dict = {'Question':QList[question_number],"QuestionNumber":question_number}
+    if request.method == "POST":
+      if form.is_valid:
+          answer = request.POST.get('answer', None)
+    if isinstance(QList[question_number],type(OpenEnded)):
+         context_dict['OpenEnded'] = True
+    elif (isinstance(QList[question_number],type(TrueOrFalse))):
+         context_dict['TrueOrFalse'] = True
+    else:
+         context_dict['MultipleChoice'] = True
+    
+    return render(request,'Quizker/ParticipateQuiz.html',context=context_dict)
 
 
 
