@@ -30,7 +30,7 @@ class Question(models.Model):
         quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
         image = models.ImageField(blank=True)
         max_length_text =256
-        Text = models.CharField(max_length=max_length_text)
+        text = models.CharField(max_length=max_length_text)
         def __str__(self):
              return self.quiz.title + " "+str(self.id)
 

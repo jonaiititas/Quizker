@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.template.defaultfilters import slugify 
-# Create your views here.
+
 def Home(request):
     return render(request, 'Quizker/Home.html',context={})
 def TrueOrFalse(request, quiz_title_slug):
@@ -50,16 +50,20 @@ def MultipleChoice(request,quiz_title_slug):
             print(form.errors)
         
      return render(request, 'Quizker/MultipleChoice.html',context={'form':MultipleChoiceForm(),'Quiz':Quiz.objects.get(slug=quiz_title_slug)})
-def Choice(request, question_id):
+def CreateChoice(request, question_id):
         if request.method == 'POST':
           form = ChoiceForm(request.POST)
           if form.is_valid():
                C = form.save(commit=False)
-               
                C.question = Question.objects.get(id = int(question_id))
                C.save()
-               url = '/Quizker/QuestionType/'+ C.question.quiz.slug +'/'
-               return redirect(url)
+               numberOfChoice = Choice.objects.filter(question = C.question).count()
+               if (numberOfChoice<4):
+                   return render(request, 'Quizker/Choice.html',context={'form':ChoiceForm(),'Question':question_id})
+               else:
+                   
+                  url = '/Quizker/QuestionType/'+ C.question.quiz.slug +'/'
+                  return redirect(url)
           else:
             print(form.errors)
         
@@ -71,13 +75,13 @@ def QuestionType(request,quiz_title_slug):
          if form.is_valid():
               model = form.save(commit=False)
               qType = model.QType
-              if (qType == '2'):
+              if qType == '2':
                   url = '/Quizker/TrueOrFalse/' + quiz_title_slug+'/'
                   return redirect(url)
-              elif(qType=='1'):
+              elif qType=='1':
                   url = '/Quizker/OpenEnded/' + quiz_title_slug+'/'
                   return redirect(url)
-              elif(qType=='3'):
+              elif qType=='3':
                   url = '/Quizker/MultipleChoice/'+ quiz_title_slug+'/'
                   return redirect(url)
          else:
@@ -102,6 +106,10 @@ def CreateQuiz(request):
         print(form.errors)
         
      return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+def ParticipateQuiz(request, quiz_title_slug, question_number=0):
+    QList = list(Question.objects.filter(quiz=Quiz.objects.get(slug=quiz_title_slug)))
+    print(QList[0].Text)
+    return render(request,'Quizker/ParticipateQuiz.html',context={'Question':QList[question_number]})
 
 
 
