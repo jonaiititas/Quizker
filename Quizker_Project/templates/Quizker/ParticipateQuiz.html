@@ -9,23 +9,37 @@
 		   {% if Question %}
 		     <p>{{ Question.text }}</p>
 			   
-
-            {% if OpenEnded %}
+             <form method="POST" action="{% url 'Quizker:ParticipateQuiz' Quiz.slug QuestionNumber %}">
+             {% csrf_token %}        
+			 {% if OpenEnded %}
+               <input type="text" name="answer" id="textinput">
+               <label for="textinput">Please enter the answer</label><br>
+               <br>
+			 {% elif TrueOrFalse %} 
+			    <input type="radio" name="answer" id="True" value=True>
+				<label for="True">True</label>
+				<br>
+				<input type="radio" name="answer" id="False" value=False>
+				<label for="False">False</label>
+	           <br>
+			 {% elif MultipleChoice %}
+	
+               
+				  {% for Choice in Choices %}
+				       <input type="radio" name="answer" id="{{Choice.id}}" value={{Choice.correct}}>
+				       <label for="{{Choice.id}}">{{Choice.text}}</label>
+				       <br>
+			      
+				  {% endfor %}
+				
+                
+			   
+			   
+            {% endif %}	
 			
-              <form method="POST" action="{% url 'Quizker:ParticapteQuiz' Quiz.slug QuestionNumber %}">
-               {% csrf_token %}
-               <input type="text" name="answer">
-
-               <button type="submit">Submit Answer</button>
-              </form>
-			{% elif TrueOrFalse %}
-			  <form method="POST" action="{% url 'Quizker:ParticapteQuiz' Quiz.slug QuestionNumber %}">
-			  {% csrf_token %}
-               <input type="checkbox" name="answer">
-
-               <button type="submit">Submit Answer</button>
-			  
-            {% endif %}			  
+			<button type="submit">Submit Answer</button>
+            <br>
+			</form>		
            {% endif %}		   
 	    </div>
 </body>
