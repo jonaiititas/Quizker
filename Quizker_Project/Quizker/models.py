@@ -18,6 +18,7 @@ class Quiz(models.Model):
         date = models.DateField()
         description = models.CharField(max_length=256)
         slug = models.SlugField(unique=True)
+        questionType = models.CharField(max_length=256)
         def save(self, *args, **kwargs):
             self.slug = slugify(self.title)
             super(Quiz,self).save(*args, **kwargs)
@@ -34,16 +35,16 @@ class Question(models.Model):
              return self.quiz.title + " "+str(self.id)
 
 class TrueOrFalse(Question):
-        answer = models.BooleanField()
+        answer = models.BooleanField(blank=True)
         def correctAnswer(self,attempt):
-               return answer==attempt
+               return self.answer == attempt
         class Meta:
             verbose_name_plural = "True or False Questions"
 
 class OpenEnded(Question):
         answer = models.CharField(max_length=128)
         def correctAnswer(self,attempt):
-              return answer == attempt
+              return self.answer == attempt
         class Meta:
             verbose_name_plural = "Open ended Questions"
 
@@ -57,7 +58,7 @@ class Choice(models.Model):
         id = models.AutoField(primary_key=True)
         question = models.ForeignKey(Question,on_delete=models.CASCADE)
         text = models.CharField(max_length=128)
-        correct = models.BooleanField(default=False)
+        correct = models.BooleanField(blank=True)
         def __str__(self):
             return str(self.id)
 class QuestionType(models.Model):
