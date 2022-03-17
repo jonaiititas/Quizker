@@ -1,5 +1,5 @@
 from django import forms
-from Quizker.models import Category,Quiz,TrueOrFalse,OpenEnded,MultipleChoice,Choice,Question,QuestionType
+from Quizker.models import Category,Quiz,TrueOrFalse,OpenEnded,MultipleChoice,Choice,Question
 import datetime
 from django.template.defaultfilters import slugify
 class QuizForm(forms.ModelForm):
@@ -41,11 +41,6 @@ class ChoiceForm(forms.ModelForm):
          model = Choice
          fields = ('text','correct',)
 
-class QuestionTypeForm(forms.ModelForm):
-     QType = forms.ChoiceField(help_text="What type of question?",choices =(('1',"Open Ended"),('2',"True or False"),('3',"Multiple Choice")))
-     class Meta:
-          model = QuestionType
-          fields= ('QType',)
           
 
 

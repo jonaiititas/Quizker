@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify 
+from django.contrib.auth.models import User
 
-# Create your models here.
 class Category(models.Model):
         id = models.AutoField(primary_key=True)
         title = models.CharField(max_length=128, unique=True)
@@ -10,10 +10,12 @@ class Category(models.Model):
              return self.title 
         class Meta:
             verbose_name_plural = "Categories"
+
+        
 class Quiz(models.Model):
         id = models.AutoField(primary_key=True)
         title = models.CharField(max_length = 128,unique=True)
-        #Creator = models.ForeignKey(User, on_delete=models.CASCADE)
+        creator = models.ForeignKey(User, on_delete=models.CASCADE)
         category = models.ForeignKey(Category, on_delete=models.CASCADE)
         date = models.DateField()
         description = models.CharField(max_length=256)
@@ -26,6 +28,14 @@ class Quiz(models.Model):
              return self.title
         class Meta:
             verbose_name_plural = "Quizzes"
+class QuizAttempt(models.Model):
+        id = models.AutoField(primary_key=True)
+        quiz = models.ForeignKey(Quiz,on_delete=models.CASCADE)
+        user = models.ForeignKey(User,on_delete=models.CASCADE)
+        score = models.IntegerField(default=0)
+        questionsCompleted = models.IntegerField(default=0)
+        
+          
 class Question(models.Model):
         id = models.AutoField(primary_key=True)
         quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
