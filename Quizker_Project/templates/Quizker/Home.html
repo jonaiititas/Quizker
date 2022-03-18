@@ -8,7 +8,7 @@
 		<div>
 		    <a href="{% url 'Quizker:CreateQuiz' %}">Create Quiz</a>
 	    </div>
-
+       
 		<div>
 			<ul>
 				{% if user.is_authenticated %}
@@ -21,5 +21,9 @@
 				{% endif %}
 			</ul>
 		</div>
+		<div>
+		   {% for Quiz in Quizzes %}
+		        <li><a href="{% url 'Quizker:ParticipateQuiz' Quiz.slug%}">{{Quiz.title}}</a></li>
+		   {% endfor %} 
 </body>
 </html>

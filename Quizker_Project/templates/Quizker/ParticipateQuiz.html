@@ -4,12 +4,11 @@
 <head>
 <title>Question Type</title>
 <body>
-<h2>Create a Quiz</h2>
+<h2>{{quiz.title}}</h2>
 		<div>
 		   {% if Question %}
 		     <p>{{ Question.text }}</p>
-			   
-             <form method="POST" action="{% url 'Quizker:ParticipateQuiz' Quiz.slug QuestionNumber %}">
+             <form method="POST" action="{% url 'Quizker:ParticipateQuiz' Quiz.slug  %}">
              {% csrf_token %}        
 			 {% if OpenEnded %}
                <input type="text" name="answer" id="textinput">
@@ -34,7 +33,9 @@
 				
                 
 			   
+			 
 			   
+			 
             {% endif %}	
 			
 			<button type="submit">Submit Answer</button>

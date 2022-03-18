@@ -10,7 +10,6 @@ import datetime
 from django.template.defaultfilters import slugify 
 
 def Home(request):
-    
     return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()})
 def CreateQuiz(request):
      form = QuizForm()
@@ -21,13 +20,14 @@ def CreateQuiz(request):
                Quiz.date = datetime.date.today()
                Quiz.creator = request.user
                Quiz.save()
-               #return redirect(reverse(('Create'+Quiz.questionType),kwargs=('quiz_title_slug':Quiz.slug,)))
-               url = '/Quizker/'+Quiz.questionType+'/'+Quiz.slug+'/'
-               return redirect(url)
+               return redirect(reverse("Quizker:" + Quiz.questionType,kwargs={'quiz_title_slug':Quiz.slug,}))
+               #url = '/Quizker/'+Quiz.questionType+'/'+Quiz.slug+'/'
+               #return redirect(url)
           else:
                print(form.errors)
         
      return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+
 def CreateTrueOrFalse(request, quiz_title_slug):
      if request.method == 'POST':
           form = TrueOrFalseForm(request.POST)
@@ -59,8 +59,8 @@ def CreateMultipleChoice(request,quiz_title_slug):
                Q.image = form.cleaned_data.get("image")
                Q.quiz = Quiz.objects.get(slug=quiz_title_slug)
                Q.save()
-               #return redirect(reverse('CreateChoice',args=(Q.id,)))
-               return redirect('/Quizker/Choice/'+str(Q.id)+'/')
+               return redirect(reverse('Quizker:Choice',args=(Q.id,)))
+               #return redirect('/Quizker/Choice/'+str(Q.id)+'/')
           else:
             print(form.errors)
         

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<title>Question Type</title>
+<body>
+<h2>{{quiz.title}}</h2>
+<p>Congratulations, your result is {{score}} out of {{numberofquestion}}</p>
+</body>
+		
+		
+</html>
