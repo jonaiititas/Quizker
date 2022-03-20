@@ -4,7 +4,7 @@ import datetime
 from django.template.defaultfilters import slugify
 class QuizForm(forms.ModelForm):
      title=forms.CharField(max_length=256,help_text="Quiz name")
-     category = forms.ModelChoiceField(queryset=Category.objects.all())
+     category = forms.ModelChoiceField(help_text="Add a category",queryset=Category.objects.all())
      date = forms.DateField(widget=forms.HiddenInput(), initial=datetime.date.today())
      description = forms.CharField(help_text = "A brief description of your quiz",max_length=256)
      slug = forms.SlugField(widget=forms.HiddenInput(),required=False)
@@ -15,7 +15,7 @@ class QuizForm(forms.ModelForm):
           
 class QuestionForm(forms.ModelForm):
      text = forms.CharField(max_length=256,help_text="Question text")
-     image = forms.ImageField(required=False)
+     image = forms.ImageField(help_text="Add an image if required",required=False)
      class Meta:
          model = TrueOrFalse
          fields=("text","image",)

@@ -20,51 +20,35 @@ def CreateQuiz(request):
                Quiz.date = datetime.date.today()
                Quiz.creator = request.user
                Quiz.save()
-               return redirect(reverse("Quizker:" + Quiz.questionType,kwargs={'quiz_title_slug':Quiz.slug,}))
-               #url = '/Quizker/'+Quiz.questionType+'/'+Quiz.slug+'/'
-               #return redirect(url)
+               return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':Quiz.slug,}))
+              
           else:
                print(form.errors)
-        
      return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+def CreateQuestion(request,quiz_title_slug):
+          quiz = Quiz.objects.get(slug=quiz_title_slug)
+          questionType = quiz.questionType
+          print(questionType)
+          if questionType=="OpenEnded":
+             form = OpenEndedForm
+          elif questionType =="TrueOrFalse":
+             form = TrueOrFalseForm
+          else: 
+             form = MultipleChoiceForm
+          if request.method == 'POST':
+             completedForm = form(request.POST)
+             if completedForm.is_valid():
+               Q = completedForm.save(commit=False)
+               Q.quiz = Quiz.objects.get(slug=quiz_title_slug)
+               Q.save()
+             if questionType=='MultipleChoice':
+                return redirect(reverse('Quizker:CreateChoice',kwargs={'question_id':Q.id}))
+             else:
+               print(completedForm.errors)
+        
+          return render(request, 'Quizker/CreateQuestion.html',context={'form':form(),'Quiz':Quiz.objects.get(slug=quiz_title_slug)}) 
+     
 
-def CreateTrueOrFalse(request, quiz_title_slug):
-     if request.method == 'POST':
-          form = TrueOrFalseForm(request.POST)
-          if form.is_valid():
-               Q = form.save(commit=False)
-               
-               Q.quiz = Quiz.objects.get(slug=quiz_title_slug)
-               Q.save()
-          else:
-            print(form.errors)
-        
-     return render(request, 'Quizker/TrueOrFalse.html',context={'form':TrueOrFalseForm(),'Quiz':Quiz.objects.get(slug=quiz_title_slug)}) 
-def CreateOpenEnded(request, quiz_title_slug):
-     if request.method == 'POST':
-          form = OpenEndedForm(request.POST)
-          if form.is_valid():
-               Q = form.save(commit=False)
-               Q.image = form.cleaned_data.get("image")
-               Q.quiz = Quiz.objects.get(slug=quiz_title_slug)
-               Q.save()
-          else:
-            print(form.errors)
-     return render(request, 'Quizker/OpenEnded.html',context={'form':OpenEndedForm(),'Quiz':Quiz.objects.get(slug=quiz_title_slug)}) 
-def CreateMultipleChoice(request,quiz_title_slug):
-     if request.method == 'POST':
-          form = MultipleChoiceForm(request.POST)
-          if form.is_valid():
-               Q = form.save(commit=False)
-               Q.image = form.cleaned_data.get("image")
-               Q.quiz = Quiz.objects.get(slug=quiz_title_slug)
-               Q.save()
-               return redirect(reverse('Quizker:Choice',args=(Q.id,)))
-               #return redirect('/Quizker/Choice/'+str(Q.id)+'/')
-          else:
-            print(form.errors)
-        
-     return render(request, 'Quizker/MultipleChoice.html',context={'form':MultipleChoiceForm(),'Quiz':Quiz.objects.get(slug=quiz_title_slug)})
 def CreateChoice(request, question_id):
         if request.method == 'POST':
           form = ChoiceForm(request.POST)
@@ -74,18 +58,14 @@ def CreateChoice(request, question_id):
                
                C.question = Question.objects.get(id = int(question_id))
                C.save()
-               numberOfChoice = Choice.objects.filter(question = C.question).count()
-               print(numberOfChoices)
-               if (numberOfChoice<4):
-                   return render(request, 'Quizker/Choice.html',context={'form':ChoiceForm(),'Question':question_id})
-               else:
-                  #return redirect(reverse('CreateMultipleChioce',kwargs=('quiz_title_slug':C.question.quiz.slug,)))
-                  url = '/Quizker/'+C.question.quiz.questionType+'/'+C.question.quiz.slug+'/'
-                  return redirect(url)
+               numberOfChoices = Choice.objects.filter(question = C.question).count()
+               
+               if (numberOfChoices==4):           
+                  return redirect(reverse('Quizker:CreateQuestion',kwargs={'quiz_title_slug':C.question.quiz.slug}))
           else:
                print(form.errors)
         
-        return render(request, 'Quizker/Choice.html',context={'form':ChoiceForm(),'Question':question_id})
+        return render(request, 'Quizker/CreateChoice.html',context={'form':ChoiceForm(),'Question':question_id})
  
 
 #def Quizzes(request):
@@ -116,6 +96,12 @@ def ParticipateQuiz(request, quiz_title_slug):
     if request.method == "POST" :
           answeredQuestion = QList[quizAttempt.questionsCompleted]
           answer = request.POST.get('answer', None) 
+          print(type(answer))
+          print(answer)
+          print(type(answeredQuestion.answer))
+          print(answeredQuestion.answer)
+          print(answer==answeredQuestion.answer)
+         
           if answer!=None:          
            
            if (quizType=="TrueOrFalse"):
@@ -133,6 +119,7 @@ def ParticipateQuiz(request, quiz_title_slug):
            quizAttempt.questionsCompleted+=1
            quizAttempt.save()
            if correct: 
+              quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
               quizAttempt.score += 1 
               quizAttempt.save()
            if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
@@ -149,6 +136,5 @@ def Results(request,quiz_title_slug):
     quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
     context_dict ={}
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
-    print(context_dict['NoQuestions'])
     context_dict['score'] = quizAttempt.score
     return render(request,'Quizker/Results.html',context_dict)
