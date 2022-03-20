@@ -96,26 +96,27 @@ def ParticipateQuiz(request, quiz_title_slug):
     if request.method == "POST" :
           answeredQuestion = QList[quizAttempt.questionsCompleted]
           answer = request.POST.get('answer', None) 
-          print(type(answer))
+          
           print(answer)
-          print(type(answeredQuestion.answer))
-          print(answeredQuestion.answer)
-          print(answer==answeredQuestion.answer)
+          
+         
+        
          
           if answer!=None:          
            
            if (quizType=="TrueOrFalse"):
               if (answer=="True"):
-                  correct =  answeredQuestion.correctAnswer(True)
+                  correct =  answeredQuestion.answer ==True
               else:
-                  correct =  answeredQuestion.correctAnswer(False)
-           if (quizType=="MultipleChoice"):
+                  correct =  answeredQuestion.answer == False
+           elif (quizType=="MultipleChoice"):
               if (answer=="True"):
                   correct =  True
               else:
                   correct =  False
            else:
               correct = answeredQuestion.correctAnswer(answer)
+           print(correct)
            quizAttempt.questionsCompleted+=1
            quizAttempt.save()
            if correct: 
