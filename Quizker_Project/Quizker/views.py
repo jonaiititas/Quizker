@@ -95,13 +95,7 @@ def ParticipateQuiz(request, quiz_title_slug):
     context_dict[quizType] = True    
     if request.method == "POST" :
           answeredQuestion = QList[quizAttempt.questionsCompleted]
-          answer = request.POST.get('answer', None) 
-          
-          print(answer)
-          
-         
-        
-         
+          answer = request.POST.get('answer', None)  
           if answer!=None:          
            
            if (quizType=="TrueOrFalse"):
@@ -116,7 +110,6 @@ def ParticipateQuiz(request, quiz_title_slug):
                   correct =  False
            else:
               correct = answeredQuestion.correctAnswer(answer)
-           print(correct)
            quizAttempt.questionsCompleted+=1
            quizAttempt.save()
            if correct: 
