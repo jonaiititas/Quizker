@@ -71,9 +71,6 @@ class Choice(models.Model):
         correct = models.BooleanField(blank=True)
         def __str__(self):
             return str(self.id)
-class QuestionType(models.Model):
-       id = models.AutoField(primary_key=True)
-       QType = models.CharField(max_length=256)
-       
+
 
 
