@@ -1,25 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Question Type</title>
-<body>
-<h2>Create a Quiz</h2>
-		<div>
-		   <form id="ChoiceForm" method="post" action="{% url 'Quizker:CreateChoice' Question%}">
-		   
-		   {% csrf_token %}
-		   {% for hidden in form.hidden_fields %}
-		       {{ hidden }}
-		   {% endfor %}
-		   {% for field in form.visible_fields %}
-		       {{ field.errors }}
-			   {{ field.help_text }}
-			   {{ field }}
-		   {% endfor %}
-		   <input type="submit" name="submit" value="Create Question" />
-		   </form>
-	    </div>
-</body>
-		
-		
-</html>
+{% extends 'Quizker/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Create a Choice
+{% endblock %}
+
+{% block body_block %}
+
+	<h2>Create a Quiz</h2>
+	<div>
+		<form id="ChoiceForm" method="post" action="{% url 'Quizker:Choice' Question%}">
+			{% csrf_token %}
+			{% for hidden in form.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+			{% for field in form.visible_fields %}
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+			{% endfor %}
+			<input type="submit" name="submit" value="Create Question" />
+		</form>
+	</div>
+
+{% endblock %}

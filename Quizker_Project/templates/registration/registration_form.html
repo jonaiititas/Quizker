@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html>
+{% extends 'Quizker/base.html' %}
+{% load staticfiles %}
 
-<head>
-    <title>Register</title>
-</head>
+{% block title_block %}
+    Register
+{% endblock %}
 
-<h1>Register Here</h1>
+{% block body_block %}
 
-<form method="post" action=".">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Register" />
-</form>
+    <h1>Register Here</h1>
 
-</html>
+    <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Register" />
+    </form>
+
+{% endblock %}

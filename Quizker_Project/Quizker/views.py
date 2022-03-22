@@ -10,7 +10,7 @@ import datetime
 from django.template.defaultfilters import slugify 
 
 def Home(request):
-    return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()})
+    return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()[:5]})
 def CreateQuiz(request):
      form = QuizForm()
      if request.method == 'POST':

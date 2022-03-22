@@ -1,29 +1,36 @@
-<! DOCTYPE html>
-<html>
-<head>
-<title>Quizzes</title>
-</head>
-<body>
-<h2>Create Quizzes</h2>
-		<div>
-		    <a href="{% url 'Quizker:CreateQuiz' %}">Create Quiz</a>
-	    </div>
-       
-		<div>
-			<ul>
-				{% if user.is_authenticated %}
-					<!-- Show these links when the user is logged in -->
-					<li><a href="{% url 'auth_logout' %}?next={% url 'Quizker:Home' %}">Logout</a></li>
-				{% else %}
-					<!-- Show these links when the user is NOT logged in -->
-					<li><a href="{% url 'registration_register' %}">Register</a></li>
-					<li><a href="{% url 'auth_login' %}">Login</a></li>
-				{% endif %}
-			</ul>
+{% extends 'Quizker/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Quizker
+{% endblock %}
+
+{% block body_block %}
+
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/home.css' %}">
+
+	<div class = "home">
+		<div class = "intro">
+			<h1>Participate in Quizzes. <br> Create Your Own.</h1>
+			<p>A platform to take quizzes in a number of categories, compete with others and even create your own for a fun evening with your friends or school-work.</p>
+			<div class = "register_box">
+				<a href="{% url 'registration_register' %}" class="register">Create a FREE account</a>
+			</div>
 		</div>
-		<div>
-		   {% for Quiz in Quizzes %}
-		        <li><a href="{% url 'Quizker:ParticipateQuiz' Quiz.slug%}">{{Quiz.title}}</a></li>
-		   {% endfor %} 
-</body>
-</html>
+	
+		<div class = "table">
+			<table>
+				<tr>
+					<th class = "names">Most Liked Quizzes</th>
+					<th class = "likes">Likes</th>
+				</tr>
+				{% for Quiz in Quizzes %}
+					<tr>
+						<td><a href="{% url 'Quizker:ParticipateQuiz' Quiz.slug%}">{{Quiz.title}}</a></td>
+					</tr>
+				{% endfor %} 
+			</table>
+		</div>
+	</div>
+    
+{% endblock %}
