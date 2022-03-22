@@ -40,6 +40,8 @@ def CreateQuestion(request,quiz_title_slug):
              if completedForm.is_valid():
                Q = completedForm.save(commit=False)
                Q.quiz = Quiz.objects.get(slug=quiz_title_slug)
+               if 'image' in request.FILES:
+                    Q.image = request.FILES['image']
                Q.save()
              if questionType=='MultipleChoice':
                 return redirect(reverse('Quizker:CreateChoice',kwargs={'question_id':Q.id}))
@@ -74,15 +76,14 @@ def CreateChoice(request, question_id):
 #     for category in categories:
 #         context_dict[category.title] = list(Quiz.objects.filter(category=category)
 #         context_dict['categories'].append(category.title)
-     
-     #return render(request, 'Quizker/Quizzes.html',context_dict)
+#     return render(request, 'Quizker/Quizzes.html',context_dict)
      
 def ParticipateQuiz(request, quiz_title_slug):
     
     quiz = Quiz.objects.get(slug=quiz_title_slug)
     quizAttempt = QuizAttempt.objects.get_or_create(quiz=quiz,user=request.user)[0]
     if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
-                   return redirect('/Quizker/Results/'+quiz_title_slug+'/')     
+                   return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))    
     context_dict ={"Quiz":quiz}
     quizType = quiz.questionType
     
@@ -117,11 +118,14 @@ def ParticipateQuiz(request, quiz_title_slug):
               quizAttempt.score += 1 
               quizAttempt.save()
            if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
-                   return redirect('/Quizker/Results/'+quiz_title_slug+'/')         
+                   return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))      
           
     if (quizType=="MultipleChoice"):
-        context_dict['Choices'] = Choice.objects.filter(question = QList[quizAttempt.questionsCompleted])      
+        context_dict['Choices'] = Choice.objects.filter(question = QList[quizAttempt.questionsCompleted]) 
     context_dict['Question'] = QList[quizAttempt.questionsCompleted]
+    #if (context_dict['question'].image != null):
+    #    context_dict['image'] =  context_dict['question'].image   
+    
   
     return render(request,'Quizker/ParticipateQuiz.html',context=context_dict)
 

@@ -9,7 +9,7 @@
 
 	<h2>Create a Question</h2>
 		<div>
-			<form method="post" action="{% url 'Quizker:CreateQuestion' Quiz.slug%}">
+			<form method="post" action="{% url 'Quizker:CreateQuestion' Quiz.slug%}" enctype="multipart/form-data">
 				{% csrf_token %}
 				{% for hidden in form.hidden_fields %}
 					{{ hidden }}
