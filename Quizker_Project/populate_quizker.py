@@ -171,25 +171,14 @@ def populate():
                     the_question = add_multiple_choice(question["id"],quiz,question["image"],question["text"])
                     print("MUDA")
                     for choice in question["choices"]:
-                        print("ID")
-                        print(choice["id"])
-                        print("")
-                        print(choice["text"])
-                        print("")
-                        print("id to compare")
-                        print(choice["question id"])
-                        print(question["id"])
                         if choice["question id"] == question["id"]:
-                            print(choice["correct"])
                             add_choice(choice["id"], the_question,choice["text"], choice["correct"])
-                            print("yahoooo")
 
 
                 elif question["quiz id"] == quiz_id and q["question type"] == "open ended":
                     for answer in answers:
                         if question["id"] == answer["question id"]:
                             the_answer = answer["answer"]
-                            print(the_answer)
 
                     add_open_ended(question["id"],quiz,question["image"],question["text"], the_answer)
 
@@ -201,7 +190,7 @@ def populate():
                     add_true_false(question["id"],quiz,question["image"],question["text"], the_answer)
 
 def add_question(id,quiz, image, text):
-    #Chech get_or_create inputs to properly calll function
+    
     qe = Question.objects.get_or_create(parameter=quiz, title=title)[0]
     qe.save()
     return qe
