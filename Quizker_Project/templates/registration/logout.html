@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html>
+{% extends 'Quizker/base.html' %}
+{% load staticfiles %}
 
-<head>
-    <title>Logged Out</title>
-</head>
+{% block title_block %}
+    Logged Out
+{% endblock %}
+
+{% block body_block %}
 
 <h1>Logged Out</h1>
+<p>You have been successfully logged out. Thanks for spending time on Quizker!</p>
 
-<p>
-    You have been successfully logged out. Thanks for spending time on Rango!
-</p>
-
-</html>
+{% endblock %}

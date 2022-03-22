@@ -1,12 +1,13 @@
-<!DOCTYPE html>
+{% extends 'Quizker/base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-<title>Question Type</title>
-<body>
-<h2>{{quiz.title}}</h2>
-<p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
-</body>
-		
-		
-</html>
+
+{% block title_block %}
+    Results
+{% endblock %}
+
+{% block body_block %}
+
+    <h2>{{quiz.title}}</h2>
+    <p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
+
+{% endblock %}
