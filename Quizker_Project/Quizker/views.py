@@ -12,6 +12,7 @@ from django.views import View
 
 def Home(request):
     return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()[:5]})
+@login_required
 def CreateQuiz(request):
      form = QuizForm()
      if request.method == 'POST':
@@ -20,12 +21,14 @@ def CreateQuiz(request):
                Quiz = form.save(commit=False)
                Quiz.date = datetime.date.today()
                Quiz.creator = request.user
+               Quiz.likes = 0
                Quiz.save()
                return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':Quiz.slug,}))
               
           else:
                print(form.errors)
      return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+@login_required
 def CreateQuestion(request,quiz_title_slug):
           quiz = Quiz.objects.get(slug=quiz_title_slug)
           questionType = quiz.questionType
@@ -51,7 +54,7 @@ def CreateQuestion(request,quiz_title_slug):
         
           return render(request, 'Quizker/CreateQuestion.html',context={'form':form(),'Quiz':Quiz.objects.get(slug=quiz_title_slug)}) 
      
-
+@login_required
 def CreateChoice(request, question_id):
         if request.method == 'POST':
           form = ChoiceForm(request.POST)
@@ -78,7 +81,7 @@ def CreateChoice(request, question_id):
 #         context_dict[category.title] = list(Quiz.objects.filter(category=category)
 #         context_dict['categories'].append(category.title)
 #     return render(request, 'Quizker/Quizzes.html',context_dict)
-     
+@login_required 
 def ParticipateQuiz(request, quiz_title_slug):
     
     quiz = Quiz.objects.get(slug=quiz_title_slug)
@@ -129,16 +132,18 @@ def ParticipateQuiz(request, quiz_title_slug):
     
   
     return render(request,'Quizker/ParticipateQuiz.html',context=context_dict)
-
+@login_required
 def Results(request,quiz_title_slug):
     quiz = Quiz.objects.get(slug=quiz_title_slug)
     quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
     context_dict ={}
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
+    context_dict['quiz'] = quiz
     return render(request,'Quizker/Results.html',context_dict)
-class LikeQuizView(View):
-      def get(self,request):
+@login_required
+def LikeQuizView(request):
+      
         quiz_id  = request.GET['quiz_id']
         quiz = Quiz.objects.get(id=int(quiz_id))
         quiz.likes = quiz.likes + 1      

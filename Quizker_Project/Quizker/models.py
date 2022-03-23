@@ -21,6 +21,7 @@ class Quiz(models.Model):
         description = models.CharField(max_length=256)
         slug = models.SlugField(unique=True)
         questionType = models.CharField(max_length=64,choices =(('OpenEnded',"Open Ended"),('TrueOrFalse',"True or False"),('MultipleChoice',"Multiple Choice")))
+        likes = models.IntegerField(default=0)
         def save(self, *args, **kwargs):
             self.slug = slugify(self.title)
             super(Quiz,self).save(*args, **kwargs)

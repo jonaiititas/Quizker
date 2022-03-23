@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	alert('Hello, world!');
+	
 	$("#like_btn").click(function(){
 		var quizID
 		quizID = $(this).attr('data-quizid');
