@@ -1,6 +1,7 @@
 {% extends 'Quizker/base.html' %}
 {% load staticfiles %}
 
+
 {% block title_block %}
     Results
 {% endblock %}
@@ -8,5 +9,12 @@
 {% block body_block %}
     <h2>{{quiz.title}}</h2>
     <p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
-	
+	<div> 
+    <strong id="like_count">{{quiz.likes}}</strong> 
+	<input type="button"
+	       id="like_btn"
+	       data-quizid="{{ quiz.id }}">			
+    </div>
+<script src="{% static 'js/Quizker-ajax.js' %}" crossorigin="anonymous"></script>
+
 {% endblock %}

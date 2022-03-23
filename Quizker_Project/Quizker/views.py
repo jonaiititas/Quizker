@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.template.defaultfilters import slugify 
+from django.views import View
 
 def Home(request):
     return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()[:5]})
@@ -136,3 +137,10 @@ def Results(request,quiz_title_slug):
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
     return render(request,'Quizker/Results.html',context_dict)
+class LikeQuizView(View):
+      def get(self,request):
+        quiz_id  = request.GET['quiz_id']
+        quiz = Quiz.objects.get(id=int(quiz_id))
+        quiz.likes = quiz.likes + 1      
+        quiz.save()
+        return HttpResponse(quiz.likes)
