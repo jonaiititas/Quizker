@@ -1,0 +1,35 @@
+.table {
+    padding-top: 30px;
+}
+
+table {
+    border: 3px solid #876df5;
+    border-radius: 30px;
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+th {
+    font-size: 18px;
+    padding: 10px 65px;
+    color: white;
+    background-color: #876df5;
+}
+
+.names {
+    border-top-left-radius: 30px;
+}
+
+.date {
+    border-top-right-radius: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 10px;
+}
+
+td > a {
+    text-decoration: none;
+    font-size: 18px;
+}
