@@ -13,10 +13,10 @@
     </head>
 
     <body>
-        <div>
+        <div class = "nav_container">
             <ul class = "nav">
                 <li class = "img"><a href="{% url 'Quizker:Home' %}"><img src="{% static 'images/quizker_logo.png' %}"></a></li>
-                <li><a href="{% url 'Quizker:CreateQuiz' %}">All Quizzes</a></li>
+                <li><a href="{% url 'Quizker:Quizzes' %}">All Quizzes</a></li>
                 {% if user.is_authenticated %}
                     <!-- Show these links when the user is logged in -->
                     <li><a href="{% url 'Quizker:CreateQuiz' %}">Create a Quiz</a></li>
@@ -25,7 +25,6 @@
                     <li class = "user"><a href="{% url 'auth_logout' %}?next={% url 'Quizker:Home' %}">Logout</a></li>
                 {% else %}
                     <!-- Show these links when the user is NOT logged in -->
-                    <li><a href="{% url 'Quizker:CreateQuiz' %}">Create a Quiz</a></li>
                     <li><a href="{% url 'Quizker:CreateQuiz' %}">Contact Us</a></li>
                     <li><a href="{% url 'Quizker:CreateQuiz' %}">Leaderboard</a></li>
                     <li class = "user"><a href="{% url 'auth_login' %}">Login</a></li>

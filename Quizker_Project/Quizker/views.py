@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpRequest
 from Quizker.forms import QuizForm,TrueOrFalseForm,OpenEndedForm,MultipleChoiceForm,ChoiceForm
-from .models import Quiz,Question,Choice,MultipleChoice,TrueOrFalse,OpenEnded,QuizAttempt
+from .models import Quiz,Question,Choice,MultipleChoice,TrueOrFalse,OpenEnded,QuizAttempt,Category
 from django.shortcuts import redirect,reverse
 from django.urls import reverse 
 from django.contrib.auth import authenticate, login,logout
@@ -70,13 +70,13 @@ def CreateChoice(request, question_id):
         return render(request, 'Quizker/CreateChoice.html',context={'form':ChoiceForm(),'Question':question_id})
  
 
-#def Quizzes(request):
-#     categories = list(Category.objects.all())
-#     context_dict={'categories':[]}
-#     for category in categories:
-#         context_dict[category.title] = list(Quiz.objects.filter(category=category)
-#         context_dict['categories'].append(category.title)
-#     return render(request, 'Quizker/Quizzes.html',context_dict)
+def Quizzes(request):
+    # categories = list(Category.objects.all())
+    # context_dict={'categories':[]}
+    # for category in categories:
+    #     context_dict[category.title] = list(Quiz.objects.filter(category=category))
+    #     context_dict['categories'].append(category.title)
+    return render(request, 'Quizker/Quizzes.html',context={'Quizzes':Quiz.objects.all().order_by('-date')})
      
 def ParticipateQuiz(request, quiz_title_slug):
     
