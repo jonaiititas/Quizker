@@ -21,13 +21,14 @@ def CreateQuiz(request):
                quiz = form.save(commit=False)
                quiz.date = datetime.date.today()
                quiz.creator = request.user
+               quiz.likes = 0 
                quiz.save()
                return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':quiz.slug,}))
               
           else:
                print(form.errors)
-     
-     return render(request, 'Quizker/CreateQuiz.html',context={'form':form,'numberofquizzes':Quiz.objects.filter(creator=request.user).count()+1})
+          
+     return render(request, 'Quizker/CreateQuiz.html',context={'form':form,'numberofquizzes':((Quiz.objects.filter(creator=request.user).count())+1)})
 @login_required
 def CreateQuestion(request,quiz_title_slug):
           quiz = Quiz.objects.get(slug=quiz_title_slug)
@@ -74,11 +75,6 @@ def CreateChoice(request, question_id):
         return render(request, 'Quizker/CreateChoice.html',context={'form':ChoiceForm(),'Question':question_id})
  
 def Quizzes(request):
-    # categories = list(Category.objects.all())
-    # context_dict={'categories':[]}
-    # for category in categories:
-    #     context_dict[category.title] = list(Quiz.objects.filter(category=category))
-    #     context_dict['categories'].append(category.title)
     return render(request, 'Quizker/Quizzes.html',context={'Quizzes':Quiz.objects.all().order_by('-date')})
 
 @login_required 
@@ -143,12 +139,16 @@ def Results(request,quiz_title_slug):
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
     context_dict['quiz'] = quiz
-    context_dict['likes'] = quiz.likes.count()
+  
     return render(request,'Quizker/Results.html',context_dict)
 @login_required
 def LikeQuiz(request , quiz_title_slug):
         if request.method=="POST":
           quiz = Quiz.objects.get(slug=quiz_title_slug)
-          
-          quiz.likes.add(request.user)
+          l1 = quiz.userLikes.count()
+          quiz.userLikes.add(request.user)
+          l2 = quiz.userLikes.count()
+          if l1!=l2: 
+            quiz.likes+= 1
+            quiz.save()
         return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug})) 

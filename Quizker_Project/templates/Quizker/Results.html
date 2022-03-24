@@ -9,7 +9,7 @@
     <h2>{{quiz.title}}</h2>
     <p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
 	<div> 
-	<strong> {{ likes }} likes </strong>
+	<strong> {{ quiz.likes }} likes </strong>
     <form method="POST" action="{% url 'Quizker:like_quiz' quiz.slug  %}">
 	  {% csrf_token %}
 	 
