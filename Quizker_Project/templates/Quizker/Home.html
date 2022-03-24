@@ -27,6 +27,7 @@
 				{% for Quiz in Quizzes %}
 					<tr>
 						<td><a href="{% url 'Quizker:ParticipateQuiz' Quiz.slug%}">{{Quiz.title}}</a></td>
+						<td>{{Quiz.likes}}</td>
 					</tr>
 				{% endfor %} 
 			</table>

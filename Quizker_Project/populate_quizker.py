@@ -122,27 +122,27 @@ def populate():
     
     history_quizzes = [
         {"id":"1","title": "History 101", "creator":"Blathers", "date": "2017-02-02",
-        'description':'Test yourself on basic History questions',"question type": "multiple choice", "questions" : history_questions},
+        'description':'Test yourself on basic History questions',"question type": "MultipleChoice", "questions" : history_questions},
         {"id":"2","title": "Famous Historical Figures", "creator":"Splinter", "date": "2017-03-02",
-        'description':'Can you identify the following figures',"question type": "open ended","questions" : history_questions},
+        'description':'Can you identify the following figures',"question type": "OpenEnded","questions" : history_questions},
         {"id":"3","title": "History, fact or fiction", "creator":"Speedwagon", "date": "2019-04-05",
-        'description':'Can you spot lies from truths',"question type": " True or False", "questions" : history_questions} ]
+        'description':'Can you spot lies from truths',"question type": " TrueOrFalse", "questions" : history_questions} ]
 
     science_quizzes = [
         {"id":"4","title": "Science 101", "creator":"Albert", "date": "2020-09-15",
-        'description':'Test yourself on basic Science questions',"question type": "multiple choice","questions" : science_questions},
+        'description':'Test yourself on basic Science questions',"question type": "MultipleChoice","questions" : science_questions},
         {"id":"5","title": "Marine Biology Masterclass", "creator":"Dr. Jotaro Kujo", "date": "2017-02-09",
-        'description':'Brave the depths in this demanding quiz about all things that dwell in the seas',"question type": "multiple choice","questions" : science_questions},
+        'description':'Brave the depths in this demanding quiz about all things that dwell in the seas',"question type": "MultipleChoice","questions" : science_questions},
         {"id":"6","title": "Name the Planet", "creator":"Ziggy Stardust", "date": "2012-12-12",
-        'description':'Test your knowledge of the Solar System',"question type": "open ended","questions" : science_questions} ]
+        'description':'Test your knowledge of the Solar System',"question type": "OpenEnded","questions" : science_questions} ]
 
     entretainment_quizzes = [
         {"id":"7","title": "Name The Director", "creator":"Martin", "date": "2021-01-01",
-        'description':'Can you name all these famous directors',"question type": "open ended","questions" : entretainment_questions},
+        'description':'Can you name all these famous directors',"question type": "OpenEnded","questions" : entretainment_questions},
         {"id":"8","title": "Videogame Characters", "creator":"D´Arby", "date": "2019-10-02",
-        'description':'Recognize these iconic characters?',"question type": "open ended", "questions" : entretainment_questions},
+        'description':'Recognize these iconic characters?',"question type": "OpenEnded", "questions" : entretainment_questions},
         {"id":"9","title": "Guess the Artist", "creator":"Araki", "date": "2018-02-25",
-        'description':'Can you match song titles to their respective artists',"question type": "open ended", "questions" : entretainment_questions} ]
+        'description':'Can you match song titles to their respective artists',"question type": "OpenEnded", "questions" : entretainment_questions} ]
 
 
     cats = {'History': {'quizzes': history_quizzes, "id": 1, "description": "All but historical knowledge", "title": "History"},
@@ -166,34 +166,21 @@ def populate():
             quiz_id = q["id"]
             for question in q["questions"]:
                 print(question["text"])
-                if question["quiz id"] == quiz_id and q["question type"] == "multiple choice":
-                    print("ORA")
+                if question["quiz id"] == quiz_id and q["question type"] == "MultipleChoice":
                     the_question = add_multiple_choice(question["id"],quiz,question["image"],question["text"])
-                    print("MUDA")
                     for choice in question["choices"]:
-                        print("ID")
-                        print(choice["id"])
-                        print("")
-                        print(choice["text"])
-                        print("")
-                        print("id to compare")
-                        print(choice["question id"])
-                        print(question["id"])
                         if choice["question id"] == question["id"]:
-                            print(choice["correct"])
                             add_choice(choice["id"], the_question,choice["text"], choice["correct"])
-                            print("yahoooo")
 
 
-                elif question["quiz id"] == quiz_id and q["question type"] == "open ended":
+                elif question["quiz id"] == quiz_id and q["question type"] == "OpenEnded":
                     for answer in answers:
                         if question["id"] == answer["question id"]:
                             the_answer = answer["answer"]
-                            print(the_answer)
 
                     add_open_ended(question["id"],quiz,question["image"],question["text"], the_answer)
 
-                elif question["quiz id"] == quiz_id and q["question type"] == "True or False":
+                elif question["quiz id"] == quiz_id and q["question type"] == "TrueOrFalse":
                     for answer in answers:
                         if question["id"] == answer["question id"]:
                             the_answer = answer["answer"]
@@ -201,7 +188,7 @@ def populate():
                     add_true_false(question["id"],quiz,question["image"],question["text"], the_answer)
 
 def add_question(id,quiz, image, text):
-    #Chech get_or_create inputs to properly calll function
+    
     qe = Question.objects.get_or_create(parameter=quiz, title=title)[0]
     qe.save()
     return qe
