@@ -3,12 +3,13 @@
 <html>
 <head>
 <title>Question Type</title>
-{% if correct %}
- <script type="text/javascript">
-   alert("{{ correct }}");
- </script>
-{% endif %}
+
 <body>
+  {% if correct %}
+     <script type="text/javascript">
+        alert("{{ correct }}");
+     </script>
+  {% endif %}
 <h2>{{quiz.title}}</h2>
 		<div>
 		   {% if Question %}

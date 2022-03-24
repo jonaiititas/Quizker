@@ -9,7 +9,7 @@ class QuizForm(forms.ModelForm):
      description = forms.CharField(help_text = "A brief description of your quiz",max_length=256)
      slug = forms.SlugField(widget=forms.HiddenInput(),required=False)
      questionType = forms.ChoiceField(help_text="What type of question?",choices =(('OpenEnded',"Open Ended"),('TrueOrFalse',"True or False"),('MultipleChoice',"Multiple Choice")))
-     likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+     
      class Meta:
           model = Quiz
           fields=('title','category','description','questionType')

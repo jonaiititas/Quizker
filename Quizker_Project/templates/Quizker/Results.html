@@ -9,12 +9,12 @@
     <h2>{{quiz.title}}</h2>
     <p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
 	<div> 
-    <strong id="likeCount">{{quiz.likes}}</strong> Likes
-	<button id="like"
-	        data-quizid="{{ quiz.id }}"
-			type="button">
-            Like Quiz
-    </button>			
+	<strong> {{ likes }} likes </strong>
+    <form method="POST" action="{% url 'Quizker:like_quiz' quiz.slug  %}">
+	  {% csrf_token %}
+	 
+       <button type="submit" value="Like Quiz">Like Quiz</button>	
+	</form>
     </div>
 	
     
