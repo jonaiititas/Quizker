@@ -1,0 +1,33 @@
+{% extends 'Quizker/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    All Quizzes
+{% endblock %}
+
+{% block body_block %}
+
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/Quizzes.css' %}">
+	
+	<div class = "table">
+		<table>
+			<tr>
+				<th class = "names">Name</th>
+				<th class = "category">Category</th>
+				<th class = "likes">Likes</th>
+				<th class = "creator">Creator</th>
+                <th class = "date">Date Created</th>
+			</tr>
+			{% for Quiz in Quizzes %}
+				<tr>
+					<td><a href="{% url 'Quizker:ParticipateQuiz' Quiz.slug%}">{{Quiz.title}}</a></td>
+					<td>{{Quiz.category.title}}</a></td>
+                    <td>0</td>
+					<td>{{Quiz.creator.username}}</td>
+                    <td>{{Quiz.date}}</td>
+				</tr>
+			{% endfor %} 
+		</table>
+	</div>
+    
+{% endblock %}

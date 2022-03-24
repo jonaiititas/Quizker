@@ -1,7 +1,6 @@
 {% extends 'Quizker/base.html' %}
 {% load staticfiles %}
 
-
 {% block title_block %}
     Results
 {% endblock %}
@@ -10,22 +9,16 @@
     <h2>{{quiz.title}}</h2>
     <p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
 	<div> 
-    <strong id="like_count">{{quiz.likes}}</strong> Likes
-	<button id="like_btn"
+    <strong id="likeCount">{{quiz.likes}}</strong> Likes
+	<button id="like"
 	        data-quizid="{{ quiz.id }}"
-		    class="btn btn-primary btn-sm"
 			type="button">
-            <span data-feather="thumbs-up"></span>
             Like Quiz
     </button>			
     </div>
 	
-<script src="{% static 'js/Quizker-ajax.js' %}" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script> window.jquery || document.write('<script src="https://getbootstrap.com/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="https://getbootstrap.com/docs/4.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-<script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>
+    
+
 
 
 {% endblock %}

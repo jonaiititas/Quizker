@@ -18,16 +18,17 @@ def CreateQuiz(request):
      if request.method == 'POST':
           form = QuizForm(request.POST)
           if form.is_valid():
-               Quiz = form.save(commit=False)
-               Quiz.date = datetime.date.today()
-               Quiz.creator = request.user
-               Quiz.likes = 0
-               Quiz.save()
-               return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':Quiz.slug,}))
+               quiz = form.save(commit=False)
+               quiz.date = datetime.date.today()
+               quiz.creator = request.user
+               quiz.likes = 0
+               quiz.save()
+               return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':quiz.slug,}))
               
           else:
                print(form.errors)
-     return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+     
+     return render(request, 'Quizker/CreateQuiz.html',context={'form':form,'numberofquizzes':Quiz.objects.filter(creator=request.user).count()})
 @login_required
 def CreateQuestion(request,quiz_title_slug):
           quiz = Quiz.objects.get(slug=quiz_title_slug)
@@ -121,6 +122,7 @@ def ParticipateQuiz(request, quiz_title_slug):
               quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
               quizAttempt.score += 1 
               quizAttempt.save()
+           context_dict['correct'] = correct 
            if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
                    return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))      
           
@@ -142,10 +144,9 @@ def Results(request,quiz_title_slug):
     context_dict['quiz'] = quiz
     return render(request,'Quizker/Results.html',context_dict)
 @login_required
-def LikeQuizView(request):
-      
+def LikeQuiz(request):
         quiz_id  = request.GET['quiz_id']
         quiz = Quiz.objects.get(id=int(quiz_id))
-        quiz.likes = quiz.likes + 1      
+        quiz.likes += 1      
         quiz.save()
         return HttpResponse(quiz.likes)

@@ -10,8 +10,7 @@ urlpatterns = [
      path('CreateChoice/<int:question_id>/',views.CreateChoice,name='CreateChoice'),
      path('ParticipateQuiz/<slug:quiz_title_slug>/',views.ParticipateQuiz,name='ParticipateQuiz'),
      path('Results/<slug:quiz_title_slug>/',views.Results,name='Results'),
-     path('like_quiz/', views.LikeQuizView, name='like_quiz'),
-     
+     path('like_quiz/', views.LikeQuiz, name='like_quiz'),
 ]
 
         

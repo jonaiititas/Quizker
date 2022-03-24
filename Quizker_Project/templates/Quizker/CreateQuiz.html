@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Create a Quiz
+    Create a Quiz 
 {% endblock %}
 
 {% block body_block %}
@@ -21,7 +21,7 @@
 			{{ field }}
 			<br>
 		{% endfor %}
-		<input type="submit" name="submit" value="Create Quiz" />
+		<input type="submit" name="submit" value="Create Quiz" onclick='alert("Congrats,for you thats quiz {{numberofquizzes}}.");'/>
 		</form>
 	</div>
 
