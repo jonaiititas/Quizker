@@ -11,7 +11,9 @@ urlpatterns = [
      path('ParticipateQuiz/<slug:quiz_title_slug>/',views.ParticipateQuiz,name='ParticipateQuiz'),
      path('Results/<slug:quiz_title_slug>/',views.Results,name='Results'),
      path('like_quiz/', views.LikeQuizView, name='like_quiz'),
-     
+     path('Leaderboard/', views.Leaderboard,name='Leaderboard'),
+     path('ContactUs/', views.ContactUs,name='ContactUs'),
+     path('Profile/', views.Profile,name='Profile')
 ]
 
         

@@ -1,5 +1,7 @@
 .home {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .table {
@@ -7,7 +9,7 @@
 }
 
 table {
-    border: 3px solid #876df5;
+    border: 3px solid black;
     border-radius: 30px;
 }
 
@@ -45,11 +47,11 @@ td > a {
     font-weight: bold;
   }
 
-.intro {
+/* .intro {
     padding-left: 150px;
     padding-right: 260px;
     width: 40%;
-}
+} */
 
 .intro > .register_box {
     padding-top: 30px;

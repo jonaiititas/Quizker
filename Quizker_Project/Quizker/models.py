@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify 
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Category(models.Model):
         id = models.AutoField(primary_key=True)
@@ -10,7 +12,6 @@ class Category(models.Model):
              return self.title 
         class Meta:
             verbose_name_plural = "Categories"
-
         
 class Quiz(models.Model):
         id = models.AutoField(primary_key=True)
@@ -32,7 +33,7 @@ class Quiz(models.Model):
 class QuizAttempt(models.Model):
         id = models.AutoField(primary_key=True)
         quiz = models.ForeignKey(Quiz,on_delete=models.CASCADE)
-        user = models.ForeignKey(User,on_delete=models.CASCADE)
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
         score = models.IntegerField(default=0)
         questionsCompleted = models.IntegerField(default=0)
         
@@ -73,5 +74,18 @@ class Choice(models.Model):
         def __str__(self):
             return str(self.id)
 
+class UserProfile(models.Model):
+        user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+        score = models.IntegerField(default=0)
+        nrOfCompletedQuizzes = models.IntegerField(default=0)
+        nrOfCreatedQuizzes = models.IntegerField(default=0)
 
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()

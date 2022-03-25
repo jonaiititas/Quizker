@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render
 from django.http import HttpResponse,HttpRequest
 from Quizker.forms import QuizForm,TrueOrFalseForm,OpenEndedForm,MultipleChoiceForm,ChoiceForm
@@ -6,28 +7,35 @@ from django.shortcuts import redirect,reverse
 from django.urls import reverse 
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from .models import User
 import datetime
 from django.template.defaultfilters import slugify 
 from django.views import View
 
 def Home(request):
     return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()[:5]})
+
 @login_required
 def CreateQuiz(request):
      form = QuizForm()
+     user = request.user
      if request.method == 'POST':
           form = QuizForm(request.POST)
           if form.is_valid():
                Quiz = form.save(commit=False)
                Quiz.date = datetime.date.today()
-               Quiz.creator = request.user
+               Quiz.creator = user
                Quiz.likes = 0
                Quiz.save()
+
+               user.userprofile.nrOfCreatedQuizzes += 1
+               user.save()
                return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':Quiz.slug,}))
               
           else:
                print(form.errors)
      return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+
 @login_required
 def CreateQuestion(request,quiz_title_slug):
           quiz = Quiz.objects.get(slug=quiz_title_slug)
@@ -74,11 +82,6 @@ def CreateChoice(request, question_id):
         return render(request, 'Quizker/CreateChoice.html',context={'form':ChoiceForm(),'Question':question_id})
  
 def Quizzes(request):
-    # categories = list(Category.objects.all())
-    # context_dict={'categories':[]}
-    # for category in categories:
-    #     context_dict[category.title] = list(Quiz.objects.filter(category=category))
-    #     context_dict['categories'].append(category.title)
     return render(request, 'Quizker/Quizzes.html',context={'Quizzes':Quiz.objects.all().order_by('-date')})
 
 @login_required 
@@ -132,15 +135,21 @@ def ParticipateQuiz(request, quiz_title_slug):
     
   
     return render(request,'Quizker/ParticipateQuiz.html',context=context_dict)
+
 @login_required
 def Results(request,quiz_title_slug):
     quiz = Quiz.objects.get(slug=quiz_title_slug)
-    quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
+    user = request.user
+    quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=user)
+    user.userprofile.score += quizAttempt.score
+    user.userprofile.nrOfCompletedQuizzes += 1
+    user.save()
     context_dict ={}
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
     context_dict['quiz'] = quiz
     return render(request,'Quizker/Results.html',context_dict)
+
 @login_required
 def LikeQuizView(request):
       
@@ -149,3 +158,14 @@ def LikeQuizView(request):
         quiz.likes = quiz.likes + 1      
         quiz.save()
         return HttpResponse(quiz.likes)
+
+def ContactUs(request):
+    return render(request, 'Quizker/ContactUs.html')
+
+def Leaderboard(request):
+    return render(request, 'Quizker/Leaderboard.html', context={'Users':User.objects.all()})
+
+@login_required
+def Profile(request):
+    user = request.user
+    return render(request, 'Quizker/Profile.html', context={'User':user})
