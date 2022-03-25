@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+{% extends 'Quizker/base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-<title>Question Type</title>
 
-<body>
-  {% if correct %}
+{% block title_block %}
+    {{Quiz.title}}
+{% endblock %}
+
+{% block body_block %}
+      {% if correct %}
      <script type="text/javascript">
         alert("{{ correct }}");
      </script>
@@ -51,7 +52,8 @@
 			</form>		
            {% endif %}		   
 	    </div>
-</body>
-		
-		
-</html>
+    
+
+
+
+{% endblock %}

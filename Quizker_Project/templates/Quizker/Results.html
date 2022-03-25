@@ -12,7 +12,6 @@
 	<strong> {{ quiz.likes }} likes </strong>
     <form method="POST" action="{% url 'Quizker:like_quiz' quiz.slug  %}">
 	  {% csrf_token %}
-	 
        <button type="submit" value="Like Quiz">Like Quiz</button>	
 	</form>
     </div>
