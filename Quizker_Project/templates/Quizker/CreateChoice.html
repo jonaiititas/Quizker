@@ -11,15 +11,21 @@
 	<div>
 		<form id="ChoiceForm" method="post" action="{% url 'Quizker:CreateChoice' question.id%}">
 			{% csrf_token %}
-			{% for hidden in form.hidden_fields %}
-				{{ hidden }}
-			{% endfor %}
 			{% for field in form.visible_fields %}
 				{{ field.errors }}
 				{{ field.help_text }}
 				{{ field }}
+				<br>
 			{% endfor %}
-			<input type="submit" name="submit" value="Create Question" />
+			<input type="submit" name="submit" value="Create Choice" />
+		</form>
+	</div>
+	
+	<div>
+	<form id="ChoiceForm" method="post" action="{% url 'Quizker:AddChoices' question.id%}">
+			{% csrf_token %}
+			
+			<input type="submit" name="submit" value="Finish Question" />
 		</form>
 	</div>
 	<div>

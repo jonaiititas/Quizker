@@ -11,7 +11,7 @@ from django.template.defaultfilters import slugify
 from django.views import View
 
 def Home(request):
-    return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all()[:5]})
+    return render(request, 'Quizker/Home.html',context={'Quizzes':Quiz.objects.all().order_by('-likes')[:5]})
 @login_required
 def CreateQuiz(request):
      form = QuizForm()
@@ -59,23 +59,23 @@ def CreateQuestion(request,quiz_title_slug):
      
 @login_required
 def CreateChoice(request, question_id):
+        
         if request.method == 'POST':
           form = ChoiceForm(request.POST)
           
+          
           if form.is_valid():
                C = form.save(commit=False)
-               
-               C.question = Question.objects.get(id = int(question_id))
+               C.question = MultipleChoice.objects.get(id = int(question_id))
+               if C.question.correct():
+                  C.correct = False
                C.save()
-               numberOfChoices = Choice.objects.filter(question = C.question).count()
-               
-               if (numberOfChoices==4):           
-                  return redirect(reverse('Quizker:CreateQuestion',kwargs={'quiz_title_slug':C.question.quiz.slug}))
           else:
                print(form.errors)
         context_dict ={}
         context_dict['Choices'] = Choice.objects.filter(question=MultipleChoice.objects.get(id=question_id))
-        context_dict['question'] = question=MultipleChoice.objects.get(id=question_id)
+        context_dict['question'] = MultipleChoice.objects.get(id=question_id)
+        print(context_dict['question'].correct())
         context_dict['form'] = ChoiceForm()
         return render(request, 'Quizker/CreateChoice.html',context_dict)
  
@@ -84,8 +84,11 @@ def Quizzes(request):
 
 @login_required 
 def ParticipateQuiz(request, quiz_title_slug):
-    
     quiz = Quiz.objects.get(slug=quiz_title_slug)
+    if Question.objects.filter(quiz=quiz).count()==0:
+       Quiz.objects.get(slug=quiz_title_slug).delete()
+       return redirect('/Quizker/')
+       
     quizAttempt = QuizAttempt.objects.get_or_create(quiz=quiz,user=request.user)[0]
     if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
                    return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))    
@@ -131,6 +134,8 @@ def ParticipateQuiz(request, quiz_title_slug):
     if (quizType=="MultipleChoice"):
         context_dict['Choices'] = Choice.objects.filter(question = QList[quizAttempt.questionsCompleted]) 
     context_dict['Question'] = QList[quizAttempt.questionsCompleted]
+    context_dict['quizAttempt'] = quizAttempt
+    context_dict['QuestionNumber'] = quizAttempt.questionsCompleted + 1 
     #if (context_dict['question'].image != null):
     #    context_dict['image'] =  context_dict['question'].image   
     
@@ -168,6 +173,21 @@ def RemoveChoice(request, choice_id):
     Choice.objects.get(id=choice_id).delete()   
     return redirect(reverse("Quizker:CreateChoice" ,kwargs={'question_id':question.id,}))
 
+@login_required
+def AddChoices(request, question_id):
+    question = MultipleChoice.objects.get(id=question_id)
+    if question.quiz.creator!=request.user:
+        print("1")
+        return redirect('/Quizker/')
+    if Choice.objects.filter(question=question).count()<2:
+       print("2")
+       return redirect(reverse("Quizker:CreateChoice" ,kwargs={'question_id':question_id,}))
+    if question.correct()==False:
+        print("3")
+        MultipleChoice.objects.get(id=question_id).delete()
+    return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':question.quiz.slug,}))
+
+    
     
 @login_required
 def LikeQuiz(request , quiz_title_slug):

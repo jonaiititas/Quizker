@@ -11,7 +11,9 @@
         alert("{{ correct }}");
      </script>
   {% endif %}
-<h2>{{quiz.title}}</h2>
+<h1>{{Quiz.title}}</h1>
+<h2>Question {{QuestionNumber}}</h2>
+<p>Current score is {{quizAttempt.score}} out of {{quizAttempt.questionsCompleted}}</p>
 		<div>
 		   {% if Question %}
 		     <p>{{ Question.text }}</p>

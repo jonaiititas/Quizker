@@ -1,0 +1,66 @@
+.CreateQuestion {
+    display: flex;
+}
+
+.table {
+    padding-top: 30px;
+}
+
+table {
+    border: 3px solid #876df5;
+    border-radius: 30px;
+}
+
+th {
+    font-size: 18px;
+    padding: 10px 40px;
+    color: white;
+    background-color: #876df5;
+}
+
+.names {
+    border-top-left-radius: 30px;
+}
+
+.likes {
+    border-top-right-radius: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 10px;
+}
+
+td > a {
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.register {
+    border-radius: 30px;
+    background-color: #876df5;
+    text-decoration: none;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+  }
+
+.intro {
+    padding-left: 150px;
+    padding-right: 260px;
+    width: 40%;
+}
+
+.intro > .register_box {
+    padding-top: 30px;
+}
+
+h1 {
+    color: #3b4754;
+    font-size: 42px;
+}
+
+p {
+    color: #798da3;
+    font-size: 18px;
+}
