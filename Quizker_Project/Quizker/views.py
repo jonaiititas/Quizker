@@ -145,10 +145,15 @@ def Results(request,quiz_title_slug):
 def LikeQuiz(request , quiz_title_slug):
         if request.method=="POST":
           quiz = Quiz.objects.get(slug=quiz_title_slug)
-          l1 = quiz.userLikes.count()
-          quiz.userLikes.add(request.user)
-          l2 = quiz.userLikes.count()
-          if l1!=l2: 
-            quiz.likes+= 1
-            quiz.save()
+          quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
+          if (quizAttempt.liked ==False):
+                 quiz.likes += 1 
+                 quizAttempt.liked = True
+          else:
+                 quiz.likes -= 1  
+                 quizAttempt.liked = False
+                 
+                
+          quiz.save()     
+          quizAttempt.save()
         return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug})) 

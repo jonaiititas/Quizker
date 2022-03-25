@@ -21,10 +21,7 @@ class Quiz(models.Model):
         description = models.CharField(max_length=256)
         slug = models.SlugField(unique=True)
         questionType = models.CharField(max_length=64,choices =(('OpenEnded',"Open Ended"),('TrueOrFalse',"True or False"),('MultipleChoice',"Multiple Choice")))
-        userLikes = models.ManyToManyField(User, related_name="likes")
         likes = models.IntegerField(default=0)
-        def likeCount(self):
-            return self.likes.count()
         def save(self, *args, **kwargs):
             self.slug = slugify(self.title)
             super(Quiz,self).save(*args, **kwargs)
@@ -38,6 +35,8 @@ class QuizAttempt(models.Model):
         user = models.ForeignKey(User,on_delete=models.CASCADE)
         score = models.IntegerField(default=0)
         questionsCompleted = models.IntegerField(default=0)
+        liked = models.BooleanField(default=False)
+        
         
           
 class Question(models.Model):
