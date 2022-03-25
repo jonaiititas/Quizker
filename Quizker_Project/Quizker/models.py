@@ -35,6 +35,8 @@ class QuizAttempt(models.Model):
         user = models.ForeignKey(User,on_delete=models.CASCADE)
         score = models.IntegerField(default=0)
         questionsCompleted = models.IntegerField(default=0)
+        liked = models.BooleanField(default=False)
+        
         
           
 class Question(models.Model):

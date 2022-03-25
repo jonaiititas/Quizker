@@ -18,16 +18,17 @@ def CreateQuiz(request):
      if request.method == 'POST':
           form = QuizForm(request.POST)
           if form.is_valid():
-               Quiz = form.save(commit=False)
-               Quiz.date = datetime.date.today()
-               Quiz.creator = request.user
-               Quiz.likes = 0
-               Quiz.save()
-               return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':Quiz.slug,}))
+               quiz = form.save(commit=False)
+               quiz.date = datetime.date.today()
+               quiz.creator = request.user
+               quiz.likes = 0 
+               quiz.save()
+               return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':quiz.slug,}))
               
           else:
                print(form.errors)
-     return render(request, 'Quizker/CreateQuiz.html',context={'form':form})
+          
+     return render(request, 'Quizker/CreateQuiz.html',context={'form':form,'numberofquizzes':((Quiz.objects.filter(creator=request.user).count())+1)})
 @login_required
 def CreateQuestion(request,quiz_title_slug):
           quiz = Quiz.objects.get(slug=quiz_title_slug)
@@ -74,11 +75,6 @@ def CreateChoice(request, question_id):
         return render(request, 'Quizker/CreateChoice.html',context={'form':ChoiceForm(),'Question':question_id})
  
 def Quizzes(request):
-    # categories = list(Category.objects.all())
-    # context_dict={'categories':[]}
-    # for category in categories:
-    #     context_dict[category.title] = list(Quiz.objects.filter(category=category))
-    #     context_dict['categories'].append(category.title)
     return render(request, 'Quizker/Quizzes.html',context={'Quizzes':Quiz.objects.all().order_by('-date')})
 
 @login_required 
@@ -121,6 +117,9 @@ def ParticipateQuiz(request, quiz_title_slug):
               quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
               quizAttempt.score += 1 
               quizAttempt.save()
+              context_dict['correct'] = "Well done you got it right!"
+           else:
+              context_dict['correct'] = "Oh no, you got it wrong!!"
            if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
                    return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))      
           
@@ -140,12 +139,21 @@ def Results(request,quiz_title_slug):
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
     context_dict['quiz'] = quiz
+  
     return render(request,'Quizker/Results.html',context_dict)
 @login_required
-def LikeQuizView(request):
-      
-        quiz_id  = request.GET['quiz_id']
-        quiz = Quiz.objects.get(id=int(quiz_id))
-        quiz.likes = quiz.likes + 1      
-        quiz.save()
-        return HttpResponse(quiz.likes)
+def LikeQuiz(request , quiz_title_slug):
+        if request.method=="POST":
+          quiz = Quiz.objects.get(slug=quiz_title_slug)
+          quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=request.user)
+          if (quizAttempt.liked ==False):
+                 quiz.likes += 1 
+                 quizAttempt.liked = True
+          else:
+                 quiz.likes -= 1  
+                 quizAttempt.liked = False
+                 
+                
+          quiz.save()     
+          quizAttempt.save()
+        return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug})) 
