@@ -165,7 +165,6 @@ def populate():
             quiz = add_quiz(c, q['id'], q['title'],the_user,q["date"],q["description"],q["question type"], q["likes"])
             quiz_id = q["id"]
             for question in q["questions"]:
-                print(question["text"])
                 if question["quiz id"] == quiz_id and q["question type"] == "MultipleChoice":
                     the_question = add_multiple_choice(question["id"],quiz,question["image"],question["text"])
                     for choice in question["choices"]:
@@ -214,9 +213,9 @@ def add_open_ended(id,quiz, image, text, answer):
     qe.save()
     return qe
 
-def add_quiz(cat,id,title,creator,date,description,QuestionType):
+def add_quiz(cat,id,title,creator,date,description,QuestionType,likes):
     qi = Quiz.objects.get_or_create(category = cat, id=id,title=title, creator = creator,
-    date = date,description=description,questionType=QuestionType)[0]
+    date = date,description=description,questionType=QuestionType,likes=likes)[0]
     qi.save()
     return qi
 
