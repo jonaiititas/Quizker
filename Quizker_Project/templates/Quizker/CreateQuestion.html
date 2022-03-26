@@ -7,44 +7,50 @@
 
 {% block body_block %}
 
-<div class="CreateQuestion">
-	<h2>Create a Question</h2>
-		<div class="form">
-			<form method="post" action="{% url 'Quizker:CreateQuestion' Quiz.slug%}" enctype="multipart/form-data">
-				{% csrf_token %}
-				{% for hidden in form.hidden_fields %}
-					{{ hidden }}
-				{% endfor %}
-				{% for field in form.visible_fields %}
-					{{ field.errors }}
-					{{ field.help_text }}
-					{{ field }}
-					<br>
-				{% endfor %}
-				<input type="submit" name="submit" value="Create Question" />
-			</form>
-			<form method="post" action="{% url 'Quizker:FinishQuiz' Quiz.slug%}">
-		      {% csrf_token %}
-		      <input type="submit" name="submit" value="Finish Quiz" />
-		    </form>
-		</div>
-		<div>
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/CreateQuestion.css' %}">
+
+	<h2 style="text-align: center">Create a Question</h2>
+
+	<div class="container">
+		<form method="post" action="{% url 'Quizker:CreateQuestion' Quiz.slug%}" enctype="multipart/form-data">
+			{% csrf_token %}
+			{% for hidden in form.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+			{% for field in form.visible_fields %}
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+				<br>
+			{% endfor %}
+			<input type="submit" name="submit" value="Create Question" />
+		</form>
+	</div>
+
+	<div class="container questions">
 		{% if Questions %}
-		 <table>
+			<table>
 				<tr>
-					<th>Question number</th>
-					<th>Question Text</th>
 				</tr>
 				{% for Question in Questions %}
 					<tr>
-						<td>{{forloop.counter}}</td>
+						<td><b>{{forloop.counter}}.</b></td>
 						<td>{{Question.text}}</td>
-						<td><form method="post" action="{% url 'Quizker:RemoveQuestion' Question.id%}">{% csrf_token %}<input type="submit" name="submit" value="Remove Question" /></form>
+						<td><form method="post" action="{% url 'Quizker:RemoveQuestion' Question.id%}">{% csrf_token %}<input type="submit" name="submit" value="Remove Question" /></form></td>
 					</tr>
 				{% endfor %} 
-		 </table>
+			</table>
+		{% else %}
+			<p>A created question will appear here once you added it to the quiz.</p>
 		{% endif %}
-		</div>
-</div>
+	</div>
+
+	<div class="container finish">
+		<form method="post" action="{% url 'Quizker:FinishQuiz' Quiz.slug%}">
+			{% csrf_token %}
+			<input type="submit" name="submit" value="Finish Quiz" />
+		</form>
+	</div>
+
 {% endblock %}
 

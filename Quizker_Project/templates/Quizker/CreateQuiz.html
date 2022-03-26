@@ -7,22 +7,24 @@
 
 {% block body_block %}
 
-	<h2>Create a Quiz</h2>
-	<br>
-	<div>
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/CreateQuiz.css' %}">
+
+	<h2 style="text-align: center;">Create a Quiz</h2>
+
+	<div class = "container">
 		<form id="QuizForm" method="post" action="{% url 'Quizker:CreateQuiz' %}">
-		{% csrf_token %}
-		
-		{% for field in form.visible_fields %}
-		    {{ field.errors }}
-			{{ field.help_text }}
-			{{ field }}
-			<br>
-		{% for hidden in form.hidden_fields %}
-		    {{ hidden }}
-		{% endfor %}
-		{% endfor %}
-		<input type="submit" name="submit" value="Create Quiz" onclick='alert("Congrats,for you thats quiz number {{numberofquizzes}}.");'/>
+			{% csrf_token %}
+			
+			{% for field in form.visible_fields %}
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+				<br>
+				{% for hidden in form.hidden_fields %}
+					{{ hidden }}
+				{% endfor %}
+			{% endfor %}
+			<input type="submit" name="submit" value="Create Quiz" onclick='alert("Congratulations, for you that is quiz number {{numberofquizzes}}.");'/>
 		</form>
 	</div>
 

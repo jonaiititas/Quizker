@@ -2,6 +2,7 @@ from django import forms
 from Quizker.models import Category,Quiz,TrueOrFalse,OpenEnded,MultipleChoice,Choice,Question
 import datetime
 from django.template.defaultfilters import slugify
+
 class QuizForm(forms.ModelForm):
      title=forms.CharField(max_length=256,help_text="Quiz name")
      category = forms.ModelChoiceField(help_text="Add a category",queryset=Category.objects.all())
@@ -22,19 +23,22 @@ class QuestionForm(forms.ModelForm):
          fields=("text","image",)
          
 class TrueOrFalseForm(QuestionForm):
-     answer = forms.BooleanField(help_text="True or False?",required=False)
+     answer = forms.BooleanField(help_text="Check if True",required=False)
      class Meta:
          model = TrueOrFalse
          fields=("text","image","answer",)
+
 class OpenEndedForm(QuestionForm):
      answer = forms.CharField(max_length=128,help_text="What is the answer?")
      class Meta:
          model = OpenEnded
          fields=("text","image","answer",)
+
 class MultipleChoiceForm(QuestionForm):
      class Meta:
          model = MultipleChoice
          fields=("text","image",)
+         
 class ChoiceForm(forms.ModelForm):
      text = forms.CharField(max_length=128,help_text="Choice Text")
      correct = forms.BooleanField(required=False,help_text="Is this correct?")

@@ -1,0 +1,31 @@
+{% extends 'Quizker/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Leaderboard
+{% endblock %}
+
+{% block body_block %}
+
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/Leaderboard.css' %}">
+
+    <h2 style="text-align: center;">Leaderboard</h2>
+	
+	<div class = "table">
+		<table>
+			<tr>
+				<th class = "user">User</th>
+				<th class = "score">Total Score</th>
+				<th class = "completed">Quizzes Completed</th>
+			</tr>
+			{% for User in Users %}
+            <tr>
+                <td>{{User.username}}</a></td>
+                <td>{{User.profile.score}}</a></td>
+                <td>{{User.profile.nrOfQuizzesCompleted}}</td>
+            </tr>
+			{% endfor %} 
+		</table>
+	</div>
+    
+{% endblock %}

@@ -6,56 +6,47 @@
 {% endblock %}
 
 {% block body_block %}
-      {% if correct %}
-     <script type="text/javascript">
-        alert("{{ correct }}");
-     </script>
-  {% endif %}
-<h1>{{Quiz.title}}</h1>
-<h2>Question {{QuestionNumber}}</h2>
-<p>Current score is {{quizAttempt.score}} out of {{quizAttempt.questionsCompleted}}</p>
-		<div>
-		   {% if Question %}
-		     <p>{{ Question.text }}</p>
-             <form method="POST" action="{% url 'Quizker:ParticipateQuiz' Quiz.slug  %}">
-             {% csrf_token %}        
-			 {% if OpenEnded %}
-               <input type="text" name="answer" id="textinput">
-               <label for="textinput">Please enter the answer</label><br>
-               <br>
-			 {% elif TrueOrFalse %} 
-			    <input type="radio" name="answer" id="True" value=True>
-				<label for="True">True</label>
-				<br>
-				<input type="radio" name="answer" id="False" value=False>
-				<label for="False">False</label>
-	           <br>
-			 {% elif MultipleChoice %}
-	
-               
-				  {% for Choice in Choices %}
-				       <input type="radio" name="answer" id="{{Choice.id}}" value={{Choice.correct}}>
-				       <label for="{{Choice.id}}">{{Choice.text}}</label>
-				       <br>
-			      
-				  {% endfor %}
-				
-                
-			   
-			 
-			   
-			 
-            {% endif %}	
-			{% if Question.image %}     
-			     <img src="{{Question.image.url}}"width="400" height="500"/>
-			{% endif %}
-			<button type="submit">Submit Answer</button>
-            <br>
-			</form>		
-           {% endif %}		   
-	    </div>
-    
 
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/ParticipateQuiz.css' %}">
 
+    {% if correct %}
+    <script type="text/javascript">alert("{{ correct }}");</script>
+	{% endif %}
+
+	<h2 style="text-align: center"><i>{{Quiz.title}}</i></h2>
+
+	<div class = "container">
+		<h3 style="text-align: center">Question {{QuestionNumber}}</h3>
+		<p style="text-align: center">Current score is {{quizAttempt.score}} out of {{quizAttempt.questionsCompleted}}</p>
+
+		{% if Question %}
+			<p>{{ Question.text }}</p>
+			<form method="POST" action="{% url 'Quizker:ParticipateQuiz' Quiz.slug  %}">
+				{% csrf_token %}        
+				{% if OpenEnded %}
+					<input type="text" name="answer" id="textinput">
+					<label for="textinput">Please enter the answer</label><br>
+					<br>
+				{% elif TrueOrFalse %} 
+					<input type="radio" name="answer" id="True" value=True>
+					<label for="True">True</label>
+					<br>
+					<input type="radio" name="answer" id="False" value=False>
+					<label for="False">False</label>
+					<br>
+				{% elif MultipleChoice %}
+					{% for Choice in Choices %}
+						<input type="radio" name="answer" id="{{Choice.id}}" value={{Choice.correct}}>
+						<label for="{{Choice.id}}">{{Choice.text}}</label>
+						<br>
+					{% endfor %}
+				{% endif %}	
+				{% if Question.image %}     
+					<img src="{{Question.image.url}}"width="400" height="500"/>
+				{% endif %}
+				<button type="submit">Submit Answer</button>
+	   		</form>		
+	  	{% endif %}
+	</div>
 
 {% endblock %}
