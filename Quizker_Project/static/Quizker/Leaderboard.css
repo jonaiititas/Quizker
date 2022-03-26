@@ -8,7 +8,7 @@ table {
     margin-left:auto; 
     margin-right:auto;
     background-color: #f2f2f2;
-    width: 75%;
+    width: 45%;
 }
 
 th {
@@ -18,11 +18,11 @@ th {
     background-color: #876df5;
 }
 
-.names {
+.user {
     border-top-left-radius: 30px;
 }
 
-.date {
+.completed {
     border-top-right-radius: 30px;
 }
 
