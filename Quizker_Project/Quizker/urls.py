@@ -15,7 +15,9 @@ urlpatterns = [
      path('CreateQuiz/RemoveQuestion/<int:quiz_id>/',views.RemoveQuestion,name='RemoveQuestion'),
      path('CreateQuiz/CreateQuestion/RemoveChoice/<int:choice_id>/',views.RemoveChoice,name='RemoveChoice'),
      path('CreateQuiz/CreateQuestion/AddChoices/<int:question_id>/',views.AddChoices,name='AddChoices'),
-   
+     path('Profile/',views.UserProfile,name="UserProfile"),
+     path('Leaderboard/',views.Leaderboard,name="Leaderboard"),
+     path('ContactUs/',views.ContactUs,name="ContactUs"),
 ]
 
         
