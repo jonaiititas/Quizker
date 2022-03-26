@@ -7,8 +7,11 @@
 
 {% block body_block %}
 
-	<h2>Create a Quiz</h2>
-	<div>
+	<link rel="stylesheet" type="text/css" href="{% static 'Quizker/CreateChoice.css' %}">
+
+	<h2 style="text-align: center">Create a Choice for <i>{{question.text}}</i></h2>
+
+	<div class="container">
 		<form id="ChoiceForm" method="post" action="{% url 'Quizker:CreateChoice' question.id%}">
 			{% csrf_token %}
 			{% for field in form.visible_fields %}
@@ -20,20 +23,13 @@
 			<input type="submit" name="submit" value="Create Choice" />
 		</form>
 	</div>
-	
-	<div>
-	<form id="ChoiceForm" method="post" action="{% url 'Quizker:AddChoices' question.id%}">
-			{% csrf_token %}
-			
-			<input type="submit" name="submit" value="Finish Question" />
-		</form>
-	</div>
-	<div>
-	{% if Choices %}
-		 <table>
+
+	<div class="container choices">
+		{% if Choices %}
+			<table>
 				<tr>
 					<th>Choice number</th>
-					<th>Choice Text</th>
+					<th>Choice</th>
 					<th>True or False</th>
 				</tr>
 				{% for Choice in Choices %}
@@ -44,8 +40,17 @@
 						<td><form method="post" action="{% url 'Quizker:RemoveChoice' Choice.id%}">{% csrf_token %}<input type="submit" name="submit" value="Remove Choice" /></form>
 					</tr>
 				{% endfor %} 
-		 </table>
-		{% endif %}
-    </div>
+			</table>
+		{% else %}
+			<p>A created choice will appear here once you added it to the question.</p>
+	    {% endif %}
+	</div>
+
+	<div class="container finish">
+		<form id="ChoiceForm" method="post" action="{% url 'Quizker:AddChoices' question.id%}">
+			{% csrf_token %}
+			<input type="submit" name="submit" value="Finish Question" />
+		</form>
+	</div>
 
 {% endblock %}
