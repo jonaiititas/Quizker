@@ -37,7 +37,7 @@ class MultipleChoiceForm(QuestionForm):
          fields=("text","image",)
 class ChoiceForm(forms.ModelForm):
      text = forms.CharField(max_length=128,help_text="Choice Text")
-     correct = forms.BooleanField(required=False)
+     correct = forms.BooleanField(required=False,help_text="Is this correct?")
      class Meta:
          model = Choice
          fields = ('text','correct',)

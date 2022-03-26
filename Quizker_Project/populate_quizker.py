@@ -87,15 +87,15 @@ def populate():
         {"question id" : "27","id":"18", "answer": "King Crimson", "text": "Gravity"} ]
 
     history_questions = [
-        {"quiz id" : "1","id":"1","image": None, "creator":"Blathers", "text": "When did Columbus arrive to the Americas?", "choices" : history_choices},
-        {"quiz id" : "1","id":"2","image": None, "creator":"Blathers", "text": "What was the name of the first Roman Emperor?", "choices" : history_choices},
-        {"quiz id" : "1","id":"3","image": None, "creator":"Blathers", "text": "When did WW2 end?", "choices" : history_choices},
-        {"quiz id" : "2","id":"4","image": None, "creator":"Splinter", "text": "Who is this?"},
-        {"quiz id" : "2","id":"5","image": None, "creator":"Splinter", "text": "Who is this?"},
-        {"quiz id" : "2","id":"6","image": None, "creator":"Splinter", "text": "Who is this?"},
-        {"quiz id" : "3","id":"7","image": None, "creator":"Speedwagon", "text": "Cleopatra was closer to the creation of the smartphone than the building of the great pyramid"},
-        {"quiz id" : "3","id":"8","image": None, "creator":"Speedwagon","text": "Did the 100-year war last 100 years"},
-        {"quiz id" : "3","id":"9","image": None, "creator":"Speedwagon", "text": "Potatoes come from Europe"} ]
+        {"quiz id" : "1","id":"1","image": None,  "text": "When did Columbus arrive to the Americas?", "choices" : history_choices},
+        {"quiz id" : "1","id":"2","image": None,  "text": "What was the name of the first Roman Emperor?", "choices" : history_choices},
+        {"quiz id" : "1","id":"3","image": None, "text": "When did WW2 end?", "choices" : history_choices},
+        {"quiz id" : "2","id":"4","image": None,  "text": "Who is this?"},
+        {"quiz id" : "2","id":"5","image": None,  "text": "Who is this?"},
+        {"quiz id" : "2","id":"6","image": None,  "text": "Who is this?"},
+        {"quiz id" : "3","id":"7","image": None, "text": "Cleopatra was closer to the creation of the smartphone than the building of the great pyramid"},
+        {"quiz id" : "3","id":"8","image": None, "text": "Did the 100-year war last 100 years"},
+        {"quiz id" : "3","id":"9","image": None, "text": "Potatoes come from Europe"} ]
     
     science_questions = [
         {"quiz id" : "4","id":"10","image": None, "creator":"Albert", "text": "What is the atomic number of Hydrogen in the periodic table", "choices" : science_choices},
@@ -121,27 +121,27 @@ def populate():
 
     
     history_quizzes = [
-        {"id":"1","title": "History 101", "creator":"Blathers", "date": "2017-02-02",
+        {"id":"1","title": "History 101", "likes":15, "date": "2017-02-02",
         'description':'Test yourself on basic History questions',"question type": "MultipleChoice", "questions" : history_questions},
-        {"id":"2","title": "Famous Historical Figures", "creator":"Splinter", "date": "2017-03-02",
+        {"id":"2","title": "Famous Historical Figures", "likes":60, "date": "2017-03-02",
         'description':'Can you identify the following figures',"question type": "OpenEnded","questions" : history_questions},
-        {"id":"3","title": "History, fact or fiction", "creator":"Speedwagon", "date": "2019-04-05",
+        {"id":"3","title": "History, fact or fiction", "likes": 80, "date": "2019-04-05",
         'description':'Can you spot lies from truths',"question type": " TrueOrFalse", "questions" : history_questions} ]
 
     science_quizzes = [
-        {"id":"4","title": "Science 101", "creator":"Albert", "date": "2020-09-15",
+        {"id":"4","title": "Science 101", "likes": 10, "date": "2020-09-15",
         'description':'Test yourself on basic Science questions',"question type": "MultipleChoice","questions" : science_questions},
-        {"id":"5","title": "Marine Biology Masterclass", "creator":"Dr. Jotaro Kujo", "date": "2017-02-09",
+        {"id":"5","title": "Marine Biology Masterclass", "likes": 89, "date": "2017-02-09",
         'description':'Brave the depths in this demanding quiz about all things that dwell in the seas',"question type": "MultipleChoice","questions" : science_questions},
-        {"id":"6","title": "Name the Planet", "creator":"Ziggy Stardust", "date": "2012-12-12",
+        {"id":"6","title": "Name the Planet", "likes":50, "date": "2012-12-12",
         'description':'Test your knowledge of the Solar System',"question type": "OpenEnded","questions" : science_questions} ]
 
     entretainment_quizzes = [
-        {"id":"7","title": "Name The Director", "creator":"Martin", "date": "2021-01-01",
+        {"id":"7","title": "Name The Director", "likes":24, "date": "2021-01-01",
         'description':'Can you name all these famous directors',"question type": "OpenEnded","questions" : entretainment_questions},
-        {"id":"8","title": "Videogame Characters", "creator":"D´Arby", "date": "2019-10-02",
+        {"id":"8","title": "Videogame Characters", "likes":50, "date": "2019-10-02",
         'description':'Recognize these iconic characters?',"question type": "OpenEnded", "questions" : entretainment_questions},
-        {"id":"9","title": "Guess the Artist", "creator":"Araki", "date": "2018-02-25",
+        {"id":"9","title": "Guess the Artist", "likes":100, "date": "2018-02-25",
         'description':'Can you match song titles to their respective artists',"question type": "OpenEnded", "questions" : entretainment_questions} ]
 
 
@@ -162,10 +162,9 @@ def populate():
         description = cat_data["description"]
         c = add_category(id,cat,description)
         for q in cat_data['quizzes']:
-            quiz = add_quiz(c, q['id'], q['title'],the_user,q["date"],q["description"],q["question type"])
+            quiz = add_quiz(c, q['id'], q['title'],the_user,q["date"],q["description"],q["question type"], q["likes"])
             quiz_id = q["id"]
             for question in q["questions"]:
-                print(question["text"])
                 if question["quiz id"] == quiz_id and q["question type"] == "MultipleChoice":
                     the_question = add_multiple_choice(question["id"],quiz,question["image"],question["text"])
                     for choice in question["choices"]:
@@ -214,9 +213,9 @@ def add_open_ended(id,quiz, image, text, answer):
     qe.save()
     return qe
 
-def add_quiz(cat,id,title,creator,date,description,QuestionType):
+def add_quiz(cat,id,title,creator,date,description,QuestionType,likes):
     qi = Quiz.objects.get_or_create(category = cat, id=id,title=title, creator = creator,
-    date = date,description=description,questionType=QuestionType)[0]
+    date = date,description=description,questionType=QuestionType,likes=likes)[0]
     qi.save()
     return qi
 

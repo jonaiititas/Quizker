@@ -62,14 +62,20 @@ class OpenEnded(Question):
             verbose_name_plural = "Open ended Questions"
 
 class MultipleChoice(Question):
-       def correctAnswer(self,choice):
-              return choice.correct
+       def correct(self):
+           choices = Choice.objects.filter(question=self)
+           correct = False
+           for choice in choices:
+               if choice.correct == True:
+                   correct = True
+           return correct 
+               
        class Meta:
             verbose_name_plural = "Multiple Choice Questions"
   
 class Choice(models.Model):
         id = models.AutoField(primary_key=True)
-        question = models.ForeignKey(Question,on_delete=models.CASCADE)
+        question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
         text = models.CharField(max_length=128)
         correct = models.BooleanField(blank=True)
         def __str__(self):

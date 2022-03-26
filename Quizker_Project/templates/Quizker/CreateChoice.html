@@ -9,18 +9,43 @@
 
 	<h2>Create a Quiz</h2>
 	<div>
-		<form id="ChoiceForm" method="post" action="{% url 'Quizker:Choice' Question%}">
+		<form id="ChoiceForm" method="post" action="{% url 'Quizker:CreateChoice' question.id%}">
 			{% csrf_token %}
-			{% for hidden in form.hidden_fields %}
-				{{ hidden }}
-			{% endfor %}
 			{% for field in form.visible_fields %}
 				{{ field.errors }}
 				{{ field.help_text }}
 				{{ field }}
+				<br>
 			{% endfor %}
-			<input type="submit" name="submit" value="Create Question" />
+			<input type="submit" name="submit" value="Create Choice" />
 		</form>
 	</div>
+	
+	<div>
+	<form id="ChoiceForm" method="post" action="{% url 'Quizker:AddChoices' question.id%}">
+			{% csrf_token %}
+			
+			<input type="submit" name="submit" value="Finish Question" />
+		</form>
+	</div>
+	<div>
+	{% if Choices %}
+		 <table>
+				<tr>
+					<th>Choice number</th>
+					<th>Choice Text</th>
+					<th>True or False</th>
+				</tr>
+				{% for Choice in Choices %}
+					<tr>
+						<td>{{forloop.counter}}</td>
+						<td>{{Choice.text}}</td>
+						<td>{{Choice.correct}}</td>
+						<td><form method="post" action="{% url 'Quizker:RemoveChoice' Choice.id%}">{% csrf_token %}<input type="submit" name="submit" value="Remove Choice" /></form>
+					</tr>
+				{% endfor %} 
+		 </table>
+		{% endif %}
+    </div>
 
 {% endblock %}
