@@ -20,9 +20,9 @@
 			</tr>
 			{% for User in Users %}
             <tr>
-                <td>{{User.username}}</a></td>
-                <td>{{User.profile.score}}</a></td>
-                <td>{{User.profile.nrOfQuizzesCompleted}}</td>
+                <td>{{User.user.username}}</a></td>
+                <td>{{User.score}}</a></td>
+                <td>{{User.nrOfQuizzesCompleted}}</td>
             </tr>
 			{% endfor %} 
 		</table>

@@ -6,16 +6,34 @@
 {% endblock %}
 
 {% block body_block %}
-
-    <h2>{{quiz.title}}</h2>
-    <p>Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
+    <link rel="stylesheet" type="text/css" href="{% static 'Quizker/Results.css' %}">
+    <h2 style="text-align: center">{{quiz.title}}</h2>
     
-	<div> 
-        <strong> {{ quiz.likes }} likes </strong>
+    
+	<div class="container"> 
+	    <p style="text-align: center">Congratulations, your result is {{score}} out of {{NoQuestions}}</p>
+        <strong style="text-align: center"> {{ quiz.likes }} likes </strong>
         <form method="POST" action="{% url 'Quizker:like_quiz' quiz.slug  %}">
         {% csrf_token %}
-        <button type="submit" value="Like Quiz">Like Quiz</button>	
+        <button style="text-align: center" type="submit" value="Like Quiz">Like Quiz</button>	
         </form>
     </div>
+	<h3 style="text-align: center">{{quiz.title}} Leaderboard</h2>
+	<div class = "table">
+		<table>
+			<tr>
+				<th class = "user">User</th>
+				<th class = "score">Score</th>
+				
+			</tr>
+			{% for QuizAttempt in QuizAttempts %}
+            <tr>
+                <td>{{QuizAttempt.user.username}}</a></td>
+                <td>{{QuizAttempt.score}}</a></td>
+               
+            </tr>
+			{% endfor %} 
+		</table>
+	</div>
 
 {% endblock %}

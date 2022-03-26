@@ -145,8 +145,7 @@ def ParticipateQuiz(request, quiz_title_slug):
     context_dict['Question'] = QList[quizAttempt.questionsCompleted]
     context_dict['quizAttempt'] = quizAttempt
     context_dict['QuestionNumber'] = quizAttempt.questionsCompleted + 1 
-    #if (context_dict['question'].image != null):
-    #    context_dict['image'] =  context_dict['question'].image   
+
     
   
     return render(request,'Quizker/ParticipateQuiz.html',context=context_dict)
@@ -165,6 +164,7 @@ def Results(request,quiz_title_slug):
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
     context_dict['quiz'] = quiz
+    context_dict['QuizAttempts'] = QuizAttempt.objects.filter(quiz=quiz).order_by('-score')[:5]
 
     return render(request,'Quizker/Results.html',context_dict)
 
@@ -230,7 +230,7 @@ def UserProfile(request):
     return render(request, 'Quizker/UserProfile.html',context=context_dict)
 
 def Leaderboard(request):
-    return render(request, 'Quizker/Leaderboard.html',context={'Users':User.objects.all()})
+    return render(request, 'Quizker/Leaderboard.html',context={'Users':Profile.objects.all().order_by('-score')})
 
 def ContactUs(request):
     return render(request, 'Quizker/ContactUs.html')
