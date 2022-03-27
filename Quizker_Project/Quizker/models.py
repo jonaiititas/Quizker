@@ -88,23 +88,18 @@ class Choice(models.Model):
     question = models.ForeignKey(MultipleChoice,on_delete=models.CASCADE)
     text = models.CharField(max_length=128)
     correct = models.BooleanField(blank=True)
-
     def __str__(self):
         return str(self.id)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     score = models.IntegerField(default=0)
-    nrOfQuizzesCreated = models.IntegerField(default=0)
-    nrOfQuizzesCompleted = models.IntegerField(default=0)
-    nrOfQuizzesLiked = models.IntegerField(default=0)
-
+    QuizzesLiked = models.IntegerField(default=0)
+    
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()

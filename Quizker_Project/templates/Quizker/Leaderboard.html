@@ -15,14 +15,14 @@
 		<table>
 			<tr>
 				<th class = "user">User</th>
-				<th class = "score">Total Score</th>
+				<th class = "score">Total Score(%)</th>
 				<th class = "completed">Quizzes Completed</th>
 			</tr>
 			{% for User in Users %}
             <tr>
-                <td>{{User.user.username}}</a></td>
-                <td>{{User.score}}</a></td>
-                <td>{{User.nrOfQuizzesCompleted}}</td>
+			    {% for object in User %}
+                  <td>{{object}}</a></td>
+                {% endfor %}
             </tr>
 			{% endfor %} 
 		</table>

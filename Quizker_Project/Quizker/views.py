@@ -156,16 +156,11 @@ def Results(request,quiz_title_slug):
     quiz = Quiz.objects.get(slug=quiz_title_slug)
     quizAttempt = QuizAttempt.objects.get(quiz=quiz,user=user)
 
-    user.profile.score += quizAttempt.score
-    user.profile.nrOfQuizzesCompleted += 1
-    user.save()
-
     context_dict ={}
     context_dict['NoQuestions'] = Question.objects.filter(quiz=quiz).count()
     context_dict['score'] = quizAttempt.score
     context_dict['quiz'] = quiz
     context_dict['QuizAttempts'] = QuizAttempt.objects.filter(quiz=quiz).order_by('-score')[:5]
-
     return render(request,'Quizker/Results.html',context_dict)
 
 @login_required
@@ -195,13 +190,10 @@ def RemoveChoice(request, choice_id):
 def AddChoices(request, question_id):
     question = MultipleChoice.objects.get(id=question_id)
     if question.quiz.creator!=request.user:
-        print("1")
         return redirect('/Quizker/')
     if Choice.objects.filter(question=question).count()<2:
-       print("2")
        return redirect(reverse("Quizker:CreateChoice" ,kwargs={'question_id':question_id,}))
     if question.correct()==False:
-        print("3")
         MultipleChoice.objects.get(id=question_id).delete()
     return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':question.quiz.slug,}))
 
@@ -216,6 +208,7 @@ def LikeQuiz(request , quiz_title_slug):
           else:
                  quiz.likes -= 1  
                  quizAttempt.liked = False
+
           quiz.save()     
           quizAttempt.save()
         return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))
@@ -226,11 +219,33 @@ def UserProfile(request):
     context_dict = {}
     context_dict['Quizzes'] = Quiz.objects.filter(creator=user).order_by('-date')
     context_dict['User'] = user
-    
+    context_dict['QuizzesCreated'] = Quiz.objects.filter(creator=request.user).count()
+    context_dict['QuizzesCompleted'] = QuizAttempt.objects.filter(user=request.user).count()
+    context_dict['QuizzesLiked'] = 0 
+    for quizAttempt in QuizAttempt.objects.filter(user=request.user):
+          if quizAttempt.liked:
+              context_dict['QuizzesLiked'] += 1 
+          if quizAttempt.questionsCompleted != Question.objects.filter(quiz=quizAttempt.quiz).count():
+             context_dict['QuizzesCompleted'] -= 1 
     return render(request, 'Quizker/UserProfile.html',context=context_dict)
 
 def Leaderboard(request):
-    return render(request, 'Quizker/Leaderboard.html',context={'Users':Profile.objects.all().order_by('-score')})
+    users = []
+    for user in User.objects.all():
+        score = 0
+        QuizzesIncomplete = 0
+        Quizzes = QuizAttempt.objects.filter(user=user)
+        for quizAttempt in Quizzes:
+            if quizAttempt.questionsCompleted!=Question.objects.filter(quiz=quizAttempt.quiz).count():
+               QuizzesIncomplete +=1 
+            else:
+               score += (quizAttempt.score/Question.objects.filter(quiz=quizAttempt.quiz).count())*100
+        if Quizzes.count()!=0:
+           users.append([user.username,round(score/(Quizzes.count()-QuizzesIncomplete),1),(Quizzes.count()-QuizzesIncomplete)])
+    users = sorted(users,key=lambda x:x[1],reverse=True)
+    print(users)
+        
+    return render(request, 'Quizker/Leaderboard.html',context={'Users':users})
 
 def ContactUs(request):
     return render(request, 'Quizker/ContactUs.html')
