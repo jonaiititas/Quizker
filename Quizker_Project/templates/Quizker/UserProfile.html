@@ -20,17 +20,17 @@
 					<th>Quizzes Liked</th>
 				</tr>
 				<tr>
-					<td>{{User.profile.nrOfQuizzesCreated}}</td>
-					<td>{{User.profile.nrOfQuizzesCompleted}}</td>
-					<td>{{User.profile.nrOfQuizzesLiked}}</td>
+					<td>{{QuizzesCreated}}</td>
+					<td>{{QuizzesCompleted}}</td>
+					<td>{{QuizzesLiked}}</td>
 				</tr>
 			</table>
 		</div>
 	</div>
-
-	<h2 style="text-align: center;">Quizzes Created</h2>
+    {% if Quizzes %}
+ 	 <h2 style="text-align: center;">Quizzes Created</h2>
 	
-	<div class = "table">
+	 <div class = "table">
 		<table>
 			<tr>
 				<th class = "names">Name</th>
@@ -49,6 +49,7 @@
 			</tr>
 			{% endfor %} 
 		</table>
-	</div>
+	 </div>
+	{% endif %}
     
 {% endblock %}

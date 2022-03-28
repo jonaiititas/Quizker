@@ -1,5 +1,9 @@
 .home {
     display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    height: auto;
 }
 
 .table {
@@ -46,9 +50,10 @@ td > a {
   }
 
 .intro {
-    padding-left: 150px;
-    padding-right: 260px;
-    width: 40%;
+    padding-right: 100px;
+    padding-left: 45px;
+    width: 50%;
+    height: auto;
 }
 
 .intro > .register_box {
