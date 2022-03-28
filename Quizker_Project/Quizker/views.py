@@ -145,6 +145,8 @@ def ParticipateQuiz(request, quiz_title_slug):
            else:
               #Adding javascipt alert message
               context_dict['correct'] = "Oh no, you got it wrong!!"
+           if (quizAttempt.questionsCompleted  == Question.objects.filter(quiz=quiz).count()):
+                   return redirect(reverse('Quizker:Results',kwargs={'quiz_title_slug':quiz_title_slug}))
     #If MultipleChoice then choies are added               
     if (quizType=="MultipleChoice"):
         context_dict['Choices'] = Choice.objects.filter(question = QList[quizAttempt.questionsCompleted]) 
