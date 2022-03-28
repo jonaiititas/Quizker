@@ -101,9 +101,9 @@ class QuizzesViewTests(TestCase):
     def test_quiz_order(self):
 
         expected_quiz_order = list(Quiz.objects.order_by('-date')[:5])
-        self.assertTrue('Quizzes' in self.response.context, f"{FAILURE_HEADER}We couldn't find a 'categories' variable in the context dictionary within the index() view. Check the instructions in the book, and try again.{FAILURE_FOOTER}")
-        self.assertEqual(type(self.response.context['Quizzes']), QuerySet, f"{FAILURE_HEADER}The 'categories' variable in the context dictionary for the index() view didn't return a QuerySet object as expected.{FAILURE_FOOTER}")
-        self.assertEqual(expected_quiz_order, list(self.response.context['Quizzes']), f"{FAILURE_HEADER}Incorrect categories/category order returned from the index() view's context dictionary -- expected {expected_quiz_order}; got {list(self.response.context['Quizzes'])}.{FAILURE_FOOTER}")
+        self.assertTrue('Quizzes' in self.response.context, )
+        self.assertEqual(type(self.response.context['Quizzes']), QuerySet, )
+        self.assertEqual(expected_quiz_order, list(self.response.context['Quizzes'])
     
     def test_template_filename(self):
         response = self.client.get(reverse('Quizker:Quizzes'))
@@ -117,7 +117,7 @@ class CreateQuizViewTests(TestCase):
         category.save()
         the_user = User.objects.get_or_create(username="Za Warudo", password = 0)[0]
         the_user.set_password("1234")
-        add_quiz(category,"01","Test Quiz",the_user,"2020-03-04","A lil test","OpenEnded",0)
+        add_quiz(category,"10","Test Quiz 2",the_user,"2020-03-04","please work","OpenEnded",0)
         response = self.client.get(reverse('CreateQuestion'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Congratulations, for you that is quiz number")
@@ -133,7 +133,7 @@ class CreateQuestionViewTests(TestCase):
         category.save()
         the_user = User.objects.get_or_create(username="Za Warudo", password = 0)[0]
         the_user.set_password("1234")
-        add_quiz(category,"01","Test Quiz",the_user,"2020-03-04","A lil test","OpenEnded",0)
+        add_quiz(category,"15","Test Quiz 3",the_user,"2020-03-04","A lil test","OpenEnded",0)
         response = self.client.get(reverse('Quizker:CreateQuestion'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Remove")
@@ -143,7 +143,7 @@ class CreateQuestionViewTests(TestCase):
         category.save()
         the_user = User.objects.get_or_create(username="Za Warudo", password = 0)[0]
         the_user.set_password("1234")
-        the_quiz = add_quiz(category,"07","Test Multiple Choice Quiz",the_user,"2020-04-03","A lil test","MultipleChoice",0)
+        the_quiz = add_quiz(category,"07","Test Multiple Choice Quiz",the_user,"2020-04-03","Multiple Save","MultipleChoice",0)
         add_multiple_choice("01",the_quiz,None,"Which of this is a birb")
         response = self.client.get(reverse("Quizker:CreateQuestion",kwargs={"quiz_title_slug" : the_quiz.slug}))
         self.assertContains(response, "Which of this is a birb")
@@ -177,7 +177,7 @@ class ResultsViewTests(TestCase):
         category.save()
         the_user = User.objects.get_or_create(username="Za Warudo", password = 0)[0]
         the_user.set_password("1234")
-        the_quiz = add_quiz(category,"07","Test Multiple Choice Quiz",the_user,"2020-04-03","A lil test","MultipleChoice",0)
+        the_quiz = add_quiz(category,"17","Test Multiple Choice Quiz 23",the_user,"2020-04-03","A lil test","MultipleChoice",0)
         response = self.client.get(reverse('Quizker:Results'),kwargs={"quiz_title_slug" : the_quiz.slug})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Congratulations, your result is')
@@ -215,22 +215,14 @@ class LeadearboardViewTests(TestCase):
 
 class Chapter5PopulationScriptTests(TestCase):
 
-    """
-    Tests whether the population script puts the expected data into a test database.
-    All values that are explicitly mentioned in the book are tested.
-    Expects that the population script has the populate() function, as per the book!
-    """
     def setUp(self):
-        """
-        Imports and runs the population script, calling the populate() method.
-        """
         try:
             import populate_quizker
         except ImportError:
-            raise ImportError(f"{FAILURE_HEADER}The Chapter 5 tests could not import the populate_rango. Check it's in the right location (the first tango_with_django_project directory).{FAILURE_FOOTER}")
+            raise ImportError
         
         if 'populate' not in dir(populate_quizker):
-            raise NameError(f"{FAILURE_HEADER}The populate() function does not exist in the populate_rango module. This is required.{FAILURE_FOOTER}")
+            raise NameError
         
-        # Call the population script -- any exceptions raised here do not have fancy error messages to help readers.
+        
         populate_quizker.populate()
