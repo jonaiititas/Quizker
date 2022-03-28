@@ -10,7 +10,6 @@ from Quizker.models import Category, Quiz, Question, TrueOrFalse, OpenEnded, Mul
 from django.contrib.auth.models import User
 
 def populate():
-    #ola Peter
 
     history_choices = [
         {"question id" : "1","id":"1","image": None, "correct": False, "text": "999"},
@@ -54,16 +53,6 @@ def populate():
         {"question id" : "15","id":"36","image": None, "correct": False, "text": "Blobfish"},
          ]
 
-    entretainment_choices = [
-        {"quiz id" : "EO1","id":"EQ01","image": None, "text":"Martin", "text": "Who is this director?"},
-        {"quiz id" : "EO1","id":"EQ02","image": None, "text":"Martin", "text": "Who is this director?"},
-        {"quiz id" : "EO1","id":"EQ03","image": None, "creator":"Martin","text": "Who is this director?" },
-        {"quiz id" : "EO2","id":"EQ04","image": None, "creator":"D´Arby", "text": "Who is this character?"},
-        {"quiz id" : "EO2","id":"EQ05","image": None, "creator":"D´Arby", "text": "Who is this character?"},
-        {"quiz id" : "EO2","id":"EQ06","image": None, "creator":"D´Arby", "text": "Who is this character?"},
-        {"quiz id" : "EO3","id":"EQ07","image": None, "creator":"Araki", "text": "Which artist made this song"},
-        {"quiz id" : "EO3","id":"EQ08","image": None, "creator":"Araki", "text": "Which artist made this song"},
-        {"quiz id" : "EO3","id":"EQ09","image": None, "creator":"Araki", "text": "Which artist made this song"} ]
 
 
     answers = [
@@ -98,26 +87,26 @@ def populate():
         {"quiz id" : "3","id":"9","image": None, "text": "Potatoes come from Europe"} ]
     
     science_questions = [
-        {"quiz id" : "4","id":"10","image": None, "creator":"Albert", "text": "What is the atomic number of Hydrogen in the periodic table", "choices" : science_choices},
-        {"quiz id" : "4","id":"11","image": None, "creator":"Albert", "text": "What is the powerhouse of the cell","choices" : science_choices},
-        {"quiz id" : "4","id":"12","image": None, "creator":"Albert", "text": "What are the 3 Newton Laws", "choices" : science_choices},
-        {"quiz id" : "5","id":"13","image": None, "creator":"Dr. Jotaro Kujo", "text": "How many hearts does an octopus have?","choices" : science_choices},
-        {"quiz id" : "5","id":"14","image": None, "creator":"Dr. Jotaro Kujo", "text": "What species of fish is Nemo?", "choices" : science_choices},
-        {"quiz id" : "5","id":"15","image": None, "creator":"Dr. Jotaro Kujo", "text": "Which of these marine animlas are mammals?", "choices" : science_choices},
-        {"quiz id" : "6","id":"16","image": None, "creator":"Ziggy Stardust", "text": "Which planet is this?"},
-        {"quiz id" : "6","id":"17","image": None, "creator":"Ziggy Stardust", "text": "Which planet is this?"},
-        {"quiz id" : "6","id":"18","image": None, "creator":"Ziggy Stardust", "text": "Which planet is this?"} ]
+        {"quiz id" : "4","id":"10","image": None, "text": "What is the atomic number of Hydrogen in the periodic table", "choices" : science_choices},
+        {"quiz id" : "4","id":"11","image": None,  "text": "What is the powerhouse of the cell","choices" : science_choices},
+        {"quiz id" : "4","id":"12","image": None,  "text": "What are the 3 Newton Laws", "choices" : science_choices},
+        {"quiz id" : "5","id":"13","image": None,  "text": "How many hearts does an octopus have?","choices" : science_choices},
+        {"quiz id" : "5","id":"14","image": None,  "text": "What species of fish is Nemo?", "choices" : science_choices},
+        {"quiz id" : "5","id":"15","image": None,  "text": "Which of these marine animlas are mammals?", "choices" : science_choices},
+        {"quiz id" : "6","id":"16","image": None,  "text": "Which planet is this?"},
+        {"quiz id" : "6","id":"17","image": None,  "text": "Which planet is this?"},
+        {"quiz id" : "6","id":"18","image": None,  "text": "Which planet is this?"} ]
 
     entretainment_questions = [
-        {"quiz id" : "7","id":"19","image": None, "creator":"Martin", "text": "Who is this director?"},
-        {"quiz id" : "7","id":"20","image": None, "creator":"Martin", "text": "Who is this director?"},
-        {"quiz id" : "7","id":"21","image": None, "creator":"Martin","text": "Who is this director?" },
-        {"quiz id" : "8","id":"22","image": None, "creator":"D´Arby", "text": "Who is this character?"},
-        {"quiz id" : "8","id":"23","image": None, "creator":"D´Arby", "text": "Who is this character?"},
-        {"quiz id" : "8","id":"24","image": None, "creator":"D´Arby", "text": "Who is this character?"},
-        {"quiz id" : "9","id":"25","image": None, "creator":"Araki", "text": "Which artist made this song"},
-        {"quiz id" : "9","id":"26","image": None, "creator":"Araki", "text": "Which artist made this song"},
-        {"quiz id" : "9","id":"27","image": None, "creator":"Araki", "text": "Which artist made this song"} ]
+        {"quiz id" : "7","id":"19","image": None,  "text": "Who is this director?"},
+        {"quiz id" : "7","id":"20","image": None,  "text": "Who is this director?"},
+        {"quiz id" : "7","id":"21","image": None, "text": "Who is this director?" },
+        {"quiz id" : "8","id":"22","image": None,  "text": "Who is this character?"},
+        {"quiz id" : "8","id":"23","image": None,  "text": "Who is this character?"},
+        {"quiz id" : "8","id":"24","image": None,  "text": "Who is this character?"},
+        {"quiz id" : "9","id":"25","image": None,  "text": "Which artist made this song"},
+        {"quiz id" : "9","id":"26","image": None,  "text": "Which artist made this song"},
+        {"quiz id" : "9","id":"27","image": None,  "text": "Which artist made this song"} ]
 
     
     history_quizzes = [
