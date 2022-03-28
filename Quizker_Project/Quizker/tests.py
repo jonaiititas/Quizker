@@ -103,7 +103,7 @@ class QuizzesViewTests(TestCase):
         expected_quiz_order = list(Quiz.objects.order_by('-date')[:5])
         self.assertTrue('Quizzes' in self.response.context, )
         self.assertEqual(type(self.response.context['Quizzes']), QuerySet, )
-        self.assertEqual(expected_quiz_order, list(self.response.context['Quizzes'])
+        self.assertEqual(expected_quiz_order, list(self.response.context['Quizzes']))
     
     def test_template_filename(self):
         response = self.client.get(reverse('Quizker:Quizzes'))
