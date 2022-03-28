@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpRequest
 from Quizker.forms import QuizForm,TrueOrFalseForm,OpenEndedForm,MultipleChoiceForm,ChoiceForm
-from .models import Quiz,Question,Choice,MultipleChoice,TrueOrFalse,OpenEnded,QuizAttempt,Category,Profile,User
+from .models import Quiz,Question,Choice,MultipleChoice,TrueOrFalse,OpenEnded,QuizAttempt,Category,User
 from django.shortcuts import redirect,reverse
 from django.urls import reverse 
 from django.contrib.auth import authenticate, login,logout
@@ -28,8 +28,7 @@ def CreateQuiz(request):
                quiz.likes = 0 
                quiz.save()
 
-               user.profile.nrOfQuizzesCreated += 1
-               user.save()
+               
 
                return redirect(reverse("Quizker:CreateQuestion" ,kwargs={'quiz_title_slug':quiz.slug,}))
               

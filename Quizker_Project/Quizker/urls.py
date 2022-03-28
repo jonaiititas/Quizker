@@ -4,7 +4,7 @@ from Quizker import views
 app_name  = 'Quizker'
 urlpatterns = [
      path('',views.Home,name="Home"),
-     path('AllQuizzes/',views.Quizzes,name='Quizzes'),
+     path('Quizzes/',views.Quizzes,name='Quizzes'),
      path('CreateQuiz/',views.CreateQuiz,name='CreateQuiz'),
      path('CreateQuiz/CreateQuestion/<slug:quiz_title_slug>/',views.CreateQuestion,name="CreateQuestion"),
      path('CreateQuiz/CreateQuestion/CreateChoice/<int:question_id>/',views.CreateChoice,name='CreateChoice'),
